@@ -1,0 +1,136 @@
+name: 🐛 Bug Report
+description: Report a bug or issue with the FTL Hi-Res Audio Player
+title: "[BUG] "
+labels: ["bug", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🎵 FTL Hi-Res Audio Player Bug Report
+        
+        ```
+        ╔═══════════════════════════════════════╗
+        ║           🐛 BUG REPORT 🐛            ║
+        ║     Neural Audio System Malfunction   ║
+        ╚═══════════════════════════════════════╝
+        ```
+        
+        Thank you for helping improve the FTL Hi-Res Audio Player! Please provide detailed information about the issue.
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 🔍 Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe the bug in detail...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: 🔄 Steps to Reproduce
+      description: Tell us how to reproduce this behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: ✅ Expected Behavior
+      description: What should happen instead?
+      placeholder: Describe what you expected to happen...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: 🧩 Component
+      description: Which component is affected?
+      options:
+        - Audio Engine
+        - Equalizer (32-band)
+        - User Interface
+        - Playlist Management
+        - Settings System
+        - File Management
+        - Neural Network Features
+        - Performance/Battery
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: device-info
+    attributes:
+      label: 📱 Device Information
+      description: Device model, Android version, RAM
+      placeholder: "e.g., Samsung Galaxy S23, Android 14, 8GB RAM"
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: 📦 App Version
+      description: Which version of FTL Audio Player?
+      placeholder: "e.g., v1.2.3"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: audio-format
+    attributes:
+      label: 🎵 Audio Format (if applicable)
+      description: What audio format were you playing?
+      options:
+        - FLAC
+        - ALAC
+        - DSD
+        - MQA
+        - MP3
+        - AAC
+        - OGG
+        - WAV
+        - Other
+        - Not applicable
+
+  - type: textarea
+    id: crash-logs
+    attributes:
+      label: 📊 Crash Logs / Error Messages
+      description: Any error messages, crash logs, or logcat output
+      placeholder: Paste crash logs or error messages here...
+      render: shell
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📝 Additional Context
+      description: Any other context about the problem
+      placeholder: |
+        - Audio output device (headphones, speakers, DAC)
+        - EQ settings being used
+        - Playlist size
+        - Any recent changes made
+        
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      description: Please confirm you've completed these steps
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have provided all required information
+          required: true
+        - label: This issue is reproducible
+          required: true

@@ -1,0 +1,162 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for the FTL Hi-Res Audio Player
+title: "[FEATURE] "
+labels: ["enhancement", "feature-request"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ✨ FTL Hi-Res Audio Player Feature Request
+        
+        ```
+        ╔═══════════════════════════════════════╗
+        ║         ✨ FEATURE REQUEST ✨         ║
+        ║      Neural Audio System Enhancement  ║
+        ╚═══════════════════════════════════════╝
+        ```
+        
+        Help us build the ultimate audiophile music player! Share your ideas for new features or improvements.
+
+  - type: textarea
+    id: feature-summary
+    attributes:
+      label: 🎯 Feature Summary
+      description: Brief description of the feature you'd like to see
+      placeholder: Summarize your feature request in 1-2 sentences...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: 🧩 Feature Category
+      description: Which area would this feature enhance?
+      options:
+        - Audio Engine & DSP
+        - Equalizer & Audio Effects
+        - User Interface & UX
+        - Playlist & Library Management
+        - Neural Network & AI Features
+        - Settings & Customization
+        - Performance & Optimization
+        - Cloud & Synchronization
+        - Hardware Integration
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: 🔍 Problem Statement
+      description: What problem does this feature solve?
+      placeholder: |
+        Describe the specific problem or limitation that this feature would address:
+        - What currently frustrates you?
+        - What workflow could be improved?
+        - What's missing from the current experience?
+    validations:
+      required: true
+
+  - type: textarea
+    id: detailed-description
+    attributes:
+      label: 📋 Detailed Description
+      description: Detailed description of the feature
+      placeholder: |
+        Provide a comprehensive description of your proposed feature:
+        - How should it work?
+        - What should the user interface look like?
+        - What settings or options should be available?
+        - How should it integrate with existing features?
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: 🎵 Use Cases & Examples
+      description: Real-world scenarios where this would be useful
+      placeholder: |
+        Provide specific examples of when and how this feature would be used:
+        - User Story 1: "As an audiophile, I want..."
+        - User Story 2: "When I'm working out, I need..."
+        - User Story 3: "During late-night listening sessions..."
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: ⚡ Priority Level
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would improve experience
+        - High - Important for workflow
+        - Critical - Blocking current usage
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target-users
+    attributes:
+      label: 👥 Target Users
+      description: Who would benefit most from this feature?
+      options:
+        - All users
+        - Casual listeners
+        - Audiophiles
+        - Power users
+        - Professional audio users
+        - Fitness enthusiasts
+        - Specific use case (explain in additional context)
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-considerations
+    attributes:
+      label: ⚙️ Technical Considerations
+      description: Any technical requirements or constraints to consider?
+      placeholder: |
+        If you have technical knowledge, please share:
+        - Performance requirements
+        - Hardware dependencies
+        - Audio format considerations
+        - Platform constraints
+        - Integration challenges
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternatives Considered
+      description: Have you considered alternative solutions?
+      placeholder: |
+        - What workarounds do you currently use?
+        - Are there similar features in other apps?
+        - What other approaches might solve this problem?
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📝 Additional Context
+      description: Any other context, mockups, or references
+      placeholder: |
+        - Links to similar implementations
+        - Screenshots or mockups
+        - References to audio standards
+        - Related GitHub issues
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      description: Please confirm you've completed these steps
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have provided detailed use cases and examples
+          required: true
+        - label: This feature aligns with the FTL Audio Player vision
+          required: true

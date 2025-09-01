@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/subc0der/ftl-player/blob/main/CLAUDE.md
+    about: Read the project documentation and development guidelines
+  - name: 💬 General Discussion
+    url: https://github.com/subc0der/ftl-player/discussions
+    about: Ask questions, share ideas, or discuss the FTL Hi-Res Audio Player
+  - name: 🤖 AI Development Notes
+    url: https://github.com/subc0der/ftl-player/blob/main/README.md#-ai-assisted-development
+    about: Learn about our AI-assisted development process with Claude

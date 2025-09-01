@@ -1,6 +1,21 @@
 # 🎵 FTL Hi-Res Audio Player
 
-**The World's Most Advanced Audiophile Music Player for Android**
+```
+╔══════════════════════════════════════════════════════════════╗
+║                    F T L   A U D I O   P L A Y E R           ║
+║                                                              ║
+║         ◢████████████████████████████████████████████◣       ║
+║        ◢██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██◣      ║
+║       ◢██▓▓░ The World's Most Advanced Audiophile ▓▓██◣     ║
+║      ◢██▓▓░    Music Player for Android    ░▓▓██◣         ║  
+║     ◢██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██◣        ║
+║    ◥████████████████████████████████████████████◤         ║
+║                                                              ║
+║    ⚡ CYBER ENHANCED ⚡ AI POWERED ⚡ AUDIOPHILE GRADE ⚡     ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
+**⚡ Neural-Enhanced Audio Experience • 32-bit/768kHz Hi-Res • AI-Powered EQ ⚡**
 
 ---
 
