@@ -434,6 +434,7 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 4. **Comprehensive Docs**: Document all parameters, return values, and exceptions
 5. **Graceful Degradation**: Handle initialization and resource loading failures
 6. **Clear Intent**: Make all behaviors explicit rather than silent
+7. **Proactive Error Handling**: Always wrap critical operations in try-catch blocks
 
 These patterns ensure Copilot reviews pass and maintain professional code quality standards.
 
