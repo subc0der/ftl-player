@@ -91,6 +91,16 @@ class NeuralAudioProcessor {
         private const val AUDIO_FEATURE_VECTOR_SIZE = 128
         private const val EQ_BANDS_COUNT = 32
         private const val MAX_PLAYLIST_LENGTH = 100
+        
+        // EQ Enhancement Constants
+        private const val WORKOUT_BASS_BOOST = 2.0f
+        private const val WORKOUT_PRESENCE_BOOST = 1.5f
+        private const val FOCUS_CLARITY_BOOST = 0.5f
+        private const val FOCUS_HARSHNESS_REDUCTION = 1.0f
+        private const val SLEEP_ROLLOFF_FACTOR = 0.5f
+        private const val SLEEP_ROLLOFF_START_OFFSET = 23
+        private const val COMMUTE_NOISE_BASELINE = 40f
+        private const val COMMUTE_COMPENSATION_SCALE = 0.1f
     }
     
     private val _currentAnalysis = MutableStateFlow<AudioIntelligence?>(null)
@@ -236,6 +246,7 @@ class NeuralAudioProcessor {
     ): FloatArray {
         require(audioBuffer.isNotEmpty()) { "Audio buffer cannot be empty" }
         require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
+        check(isInitialized) { "Neural processor must be initialized before audio enhancement" }
         
         if (!modelsLoaded) {
             Log.w(TAG, "Neural audio processor models not loaded. Skipping enhancement and returning original buffer.")
@@ -306,8 +317,8 @@ class NeuralAudioProcessor {
         // Boost bass and treble for energy, optimize for heart rate zone
         val baseBands = intelligence.suggestedEQ.toMutableList()
         // Enhance sub-bass (20-80Hz) and presence (2-8kHz)
-        for (i in 0..6) baseBands[i] += 2.0f     // Bass boost
-        for (i in 20..26) baseBands[i] += 1.5f   // Presence boost
+        for (i in 0..6) baseBands[i] += WORKOUT_BASS_BOOST     // Sub-bass enhancement for energy
+        for (i in 20..26) baseBands[i] += WORKOUT_PRESENCE_BOOST   // Presence boost for clarity
         return baseBands
     }
     
@@ -315,8 +326,8 @@ class NeuralAudioProcessor {
         // Reduce distracting frequencies, enhance clarity
         val baseBands = intelligence.suggestedEQ.toMutableList()
         // Slight mid-range focus, reduce harsh frequencies
-        for (i in 12..18) baseBands[i] += 0.5f   // Clarity
-        for (i in 22..24) baseBands[i] -= 1.0f   // Reduce harshness
+        for (i in 12..18) baseBands[i] += FOCUS_CLARITY_BOOST   // Clarity enhancement
+        for (i in 22..24) baseBands[i] -= FOCUS_HARSHNESS_REDUCTION   // Reduce distracting harshness
         return baseBands
     }
     
@@ -324,7 +335,7 @@ class NeuralAudioProcessor {
         // Gentle low-pass filtering, reduce alerting frequencies
         val baseBands = intelligence.suggestedEQ.toMutableList()
         // Roll off high frequencies gradually
-        for (i in 24..31) baseBands[i] -= (i - 23) * 0.5f
+        for (i in 24..31) baseBands[i] -= (i - SLEEP_ROLLOFF_START_OFFSET) * SLEEP_ROLLOFF_FACTOR
         return baseBands
     }
     
@@ -336,7 +347,7 @@ class NeuralAudioProcessor {
         val baseBands = intelligence.suggestedEQ.toMutableList()
         noiseLevel?.let { noise ->
             // Compensate for traffic noise (200-2000Hz range)
-            val compensation = (noise - 40f) * 0.1f // Scale noise compensation
+            val compensation = (noise - COMMUTE_NOISE_BASELINE) * COMMUTE_COMPENSATION_SCALE
             for (i in 10..19) baseBands[i] += compensation
         }
         return baseBands

@@ -443,6 +443,7 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 8. **Professional Logging**: Use Android Log with TAG constants, avoid println() in production
 9. **Clear Placeholders**: Document temporary implementations and avoid misleading comments
 10. **No Duplicate Lines**: Always review multi-line edits for accidentally duplicated content
+11. **Consistent State Validation**: Always validate initialization before checking sub-states
 
 ### Logging Best Practices
 ```kotlin
@@ -498,6 +499,54 @@ private fun processAudio() {
 - Use specific search patterns to find duplicates: `grep -n "^\s*//.*" file.kt | sort | uniq -d`
 - When using MultiEdit tool, verify each edit individually
 - Copilot reviews catch these but prevention is better
+
+### State Validation Order Best Practices
+```kotlin
+// ❌ BAD: Checking sub-state before main state
+suspend fun processAudio(data: FloatArray): FloatArray {
+    if (!modelsLoaded) {
+        return data  // Could be uninitialized but modelsLoaded = true
+    }
+    // Process audio...
+}
+
+// ✅ GOOD: Validate initialization state first, then sub-states
+suspend fun processAudio(data: FloatArray): FloatArray {
+    require(data.isNotEmpty()) { "Audio buffer cannot be empty" }
+    check(isInitialized) { "Neural processor must be initialized before processing" }
+    
+    if (!modelsLoaded) {
+        Log.w(TAG, "Models not loaded, returning original buffer")
+        return data
+    }
+    // Process audio...
+}
+```
+
+### Magic Number Extraction Standards
+```kotlin
+// ❌ BAD: Magic numbers scattered throughout algorithm functions
+private fun enhanceForWorkout(eq: List<Float>): List<Float> {
+    for (i in 0..6) bands[i] += 2.0f      // What does 2.0f represent?
+    for (i in 20..26) bands[i] += 1.5f    // What frequency range?
+    val comp = (noise - 40f) * 0.1f       // Why 40f and 0.1f?
+}
+
+// ✅ GOOD: Named constants with clear semantic meaning
+companion object {
+    // EQ Enhancement Constants
+    private const val WORKOUT_BASS_BOOST = 2.0f            // Sub-bass enhancement
+    private const val WORKOUT_PRESENCE_BOOST = 1.5f        // 2-8kHz clarity
+    private const val COMMUTE_NOISE_BASELINE = 40f         // Quiet environment baseline (dB)
+    private const val COMMUTE_COMPENSATION_SCALE = 0.1f    // Linear compensation factor
+}
+
+private fun enhanceForWorkout(eq: List<Float>): List<Float> {
+    for (i in 0..6) bands[i] += WORKOUT_BASS_BOOST         // Sub-bass enhancement for energy
+    for (i in 20..26) bands[i] += WORKOUT_PRESENCE_BOOST   // Presence boost for clarity
+    val comp = (noise - COMMUTE_NOISE_BASELINE) * COMMUTE_COMPENSATION_SCALE
+}
+```
 
 These patterns ensure Copilot reviews pass and maintain professional code quality standards.
 
