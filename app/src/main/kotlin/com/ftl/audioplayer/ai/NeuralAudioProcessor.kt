@@ -249,7 +249,7 @@ class NeuralAudioProcessor {
         check(isInitialized) { "Neural processor must be initialized before audio enhancement" }
         
         if (!modelsLoaded) {
-            Log.w(TAG, "Neural audio processor models not loaded. Skipping enhancement and returning original buffer.")
+            Log.w(TAG, "Neural audio processor models are not loaded. Skipping enhancement and returning original buffer.")
             return audioBuffer
         }
         
