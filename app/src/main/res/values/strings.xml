@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FTL Hi-Res Audio Player</string>
+    <string name="app_description">AI-Powered Audiophile Music Player</string>
+    
+    <!-- Neural Audio Processing -->
+    <string name="neural_processing_initializing">Initializing AI audio processing...</string>
+    <string name="neural_processing_ready">AI audio processing ready</string>
+    <string name="neural_processing_error">Failed to initialize AI processing</string>
+    
+    <!-- Audio Moods -->
+    <string name="mood_energetic">Energetic</string>
+    <string name="mood_relaxed">Relaxed</string>
+    <string name="mood_focused">Focused</string>
+    <string name="mood_emotional">Emotional</string>
+    <string name="mood_aggressive">Aggressive</string>
+    <string name="mood_uplifting">Uplifting</string>
+    <string name="mood_melancholic">Melancholic</string>
+    <string name="mood_neutral">Neutral</string>
+    
+    <!-- Activity Types -->
+    <string name="activity_working_out">Working Out</string>
+    <string name="activity_commuting">Commuting</string>
+    <string name="activity_working">Working</string>
+    <string name="activity_relaxing">Relaxing</string>
+    <string name="activity_studying">Studying</string>
+    <string name="activity_sleeping">Sleeping</string>
+    <string name="activity_walking">Walking</string>
+    <string name="activity_running">Running</string>
+</resources>
