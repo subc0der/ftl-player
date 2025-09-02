@@ -85,8 +85,6 @@ lint/tmp/
 # Android Profiling
 *.hprof
 
-# APK Test Packages Directory (but track the directory structure)
-apk-test-packages/*.apk
-apk-test-packages/*.aab
-!apk-test-packages/.gitkeep
-!apk-test-packages/README.md
+# Project-specific directories
+/subc0der/
+/apk-test-packages/

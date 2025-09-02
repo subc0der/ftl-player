@@ -459,7 +459,8 @@ build/
 
 **Proper artifact management:**
 - Use `.gitignore` to exclude all build artifacts
-- Store release APKs in `/apk-test-packages` directory for testing (also excluded from git)
+- Store release APKs in `/apk-test-packages` directory for testing (excluded from git)
+- Store development assets in `/subc0der` directory (excluded from git)
 - Use GitHub Releases or CI/CD for distributing builds
 - Keep repository focused on source code only
 
