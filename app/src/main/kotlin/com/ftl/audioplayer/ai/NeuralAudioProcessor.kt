@@ -213,7 +213,7 @@ class NeuralAudioProcessor {
      * @param biometricContext Current user context
      * @param targetMood Optional target mood for playlist
      * @param playlistLength Number of tracks to generate (max 100)
-     * @return Currently returns empty list. Implementation planned for Q1 2025 to return recommended track IDs using neural collaborative filtering.
+     * @return Empty list (not yet implemented)
      */
     suspend fun generateSmartPlaylist(
         seedTracks: List<String>, // Track IDs
@@ -228,7 +228,7 @@ class NeuralAudioProcessor {
         
         // Neural collaborative filtering approach
         // Considers user preferences, current context, and music similarity
-        Log.w(TAG, "generateSmartPlaylist is not yet implemented. Returning empty playlist. Planned implementation: Q1 2025.")
+        Log.w(TAG, "generateSmartPlaylist is not yet implemented")
         return emptyList()
     }
     

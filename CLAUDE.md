@@ -446,6 +446,7 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 11. **Consistent State Validation**: Always validate initialization before checking sub-states
 12. **Safe Public APIs**: Never use TODO() in public methods that could crash the app
 13. **Accurate Documentation**: KDoc must reflect current behavior, not future plans
+14. **Concise Documentation**: Keep KDoc focused on behavior, avoid implementation timelines
 
 ### Logging Best Practices
 ```kotlin
@@ -589,16 +590,42 @@ suspend fun generatePlaylist(): List<String> {
     return emptyList() // Behavior doesn't match documentation!
 }
 
-// ✅ GOOD: KDoc accurately reflecting current behavior
+// ❌ BAD: Verbose KDoc with implementation timelines and excessive details
 /**
  * Generate smart playlist using neural collaborative filtering
- * @return Currently returns empty list. Implementation planned for Q1 2025 to return recommended track IDs.
+ * @return Currently returns empty list. Implementation planned for Q1 2025 to return recommended track IDs using neural collaborative filtering.
+ */
+
+// ✅ GOOD: Concise KDoc focused on current behavior
+/**
+ * Generate smart playlist using neural collaborative filtering
+ * @return Empty list (not yet implemented)
  */
 suspend fun generatePlaylist(): List<String> {
-    Log.w(TAG, "generatePlaylist not yet implemented. Returning empty playlist.")
+    Log.w(TAG, "generatePlaylist is not yet implemented")
     return emptyList()
 }
 ```
+
+### Messaging Consistency Standards
+```kotlin
+// ❌ BAD: Inconsistent grammar and verbosity in log messages
+Log.w(TAG, "generateSmartPlaylist is not yet implemented. Returning empty playlist. Planned implementation: Q1 2025.")
+Log.w(TAG, "Models not loaded")
+Log.w(TAG, "Feature disabled temporarily")
+
+// ✅ GOOD: Consistent, concise messaging patterns
+Log.w(TAG, "generateSmartPlaylist is not yet implemented")
+Log.w(TAG, "Neural audio processor models are not loaded")
+Log.w(TAG, "Feature is not yet implemented")
+```
+
+**Documentation Conciseness Rules:**
+- @return should describe current behavior only, not future plans
+- Avoid implementation timelines in KDoc (put in code comments if needed)
+- Use consistent grammar: "is not yet implemented"
+- Keep log messages concise and focused
+- Reserve detailed explanations for code comments, not public documentation
 
 ### Algorithm Clarity Standards
 ```kotlin
