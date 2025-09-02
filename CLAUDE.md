@@ -445,6 +445,7 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 10. **No Duplicate Lines**: Always review multi-line edits for accidentally duplicated content
 11. **Consistent State Validation**: Always validate initialization before checking sub-states
 12. **Safe Public APIs**: Never use TODO() in public methods that could crash the app
+13. **Accurate Documentation**: KDoc must reflect current behavior, not future plans
 
 ### Logging Best Practices
 ```kotlin
@@ -575,6 +576,51 @@ Log.w(TAG, "Neural audio processor models are not loaded. Skipping enhancement."
 - Log warnings about incomplete functionality with implementation timeline
 - Update KDoc to reflect actual behavior: `@return Empty list until implementation complete`
 - Use proper grammar in user-facing log messages
+
+### Documentation Accuracy Standards
+```kotlin
+// ❌ BAD: KDoc describing future behavior instead of current reality
+/**
+ * Generate smart playlist using neural collaborative filtering
+ * @return List of recommended track IDs based on user preferences and context
+ */
+suspend fun generatePlaylist(): List<String> {
+    Log.w(TAG, "Not implemented yet")
+    return emptyList() // Behavior doesn't match documentation!
+}
+
+// ✅ GOOD: KDoc accurately reflecting current behavior
+/**
+ * Generate smart playlist using neural collaborative filtering
+ * @return Currently returns empty list. Implementation planned for Q1 2025 to return recommended track IDs.
+ */
+suspend fun generatePlaylist(): List<String> {
+    Log.w(TAG, "generatePlaylist not yet implemented. Returning empty playlist.")
+    return emptyList()
+}
+```
+
+### Algorithm Clarity Standards
+```kotlin
+// ❌ BAD: Confusing constant names and calculations that could produce unexpected results
+private const val SLEEP_ROLLOFF_START_OFFSET = 23
+for (i in 24..31) bands[i] -= (i - SLEEP_ROLLOFF_START_OFFSET) * factor
+// When i=24: (24-23) * 0.5f = 0.5f ✓ 
+// But constant name implies "start" when it's actually "base-1"
+
+// ✅ GOOD: Clear constant names that match their usage in calculations
+private const val SLEEP_ROLLOFF_BASE_INDEX = 24
+for (i in 24..31) bands[i] -= (i - SLEEP_ROLLOFF_BASE_INDEX + 1) * SLEEP_ROLLOFF_FACTOR
+// When i=24: (24-24+1) * 0.5f = 0.5f ✓
+// Constant name clearly indicates it's the base index for the calculation
+```
+
+**Algorithm Clarity Rules:**
+- Constant names should match their semantic meaning in calculations
+- Avoid calculations that could produce unexpected negative values
+- Use descriptive names that indicate the constant's role: BASE, START, END, FACTOR, etc.
+- Verify edge cases don't produce unintended behavior
+- Comment complex calculations to explain the mathematical progression
 
 These patterns ensure Copilot reviews pass and maintain professional code quality standards.
 

@@ -98,7 +98,7 @@ class NeuralAudioProcessor {
         private const val FOCUS_CLARITY_BOOST = 0.5f
         private const val FOCUS_HARSHNESS_REDUCTION = 1.0f
         private const val SLEEP_ROLLOFF_FACTOR = 0.5f
-        private const val SLEEP_ROLLOFF_START_OFFSET = 23
+        private const val SLEEP_ROLLOFF_BASE_INDEX = 24
         private const val COMMUTE_NOISE_BASELINE = 40f
         private const val COMMUTE_COMPENSATION_SCALE = 0.1f
     }
@@ -213,7 +213,7 @@ class NeuralAudioProcessor {
      * @param biometricContext Current user context
      * @param targetMood Optional target mood for playlist
      * @param playlistLength Number of tracks to generate (max 100)
-     * @return Empty list until implementation is complete (Q1 2025). Will return recommended track IDs once neural collaborative filtering is implemented.
+     * @return Currently returns empty list. Implementation planned for Q1 2025 to return recommended track IDs using neural collaborative filtering.
      */
     suspend fun generateSmartPlaylist(
         seedTracks: List<String>, // Track IDs
@@ -335,7 +335,7 @@ class NeuralAudioProcessor {
         // Gentle low-pass filtering, reduce alerting frequencies
         val baseBands = intelligence.suggestedEQ.toMutableList()
         // Roll off high frequencies gradually
-        for (i in 24..31) baseBands[i] -= (i - SLEEP_ROLLOFF_START_OFFSET) * SLEEP_ROLLOFF_FACTOR
+        for (i in 24..31) baseBands[i] -= (i - SLEEP_ROLLOFF_BASE_INDEX + 1) * SLEEP_ROLLOFF_FACTOR
         return baseBands
     }
     
