@@ -444,6 +444,7 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 9. **Clear Placeholders**: Document temporary implementations and avoid misleading comments
 10. **No Duplicate Lines**: Always review multi-line edits for accidentally duplicated content
 11. **Consistent State Validation**: Always validate initialization before checking sub-states
+12. **Safe Public APIs**: Never use TODO() in public methods that could crash the app
 
 ### Logging Best Practices
 ```kotlin
@@ -547,6 +548,33 @@ private fun enhanceForWorkout(eq: List<Float>): List<Float> {
     val comp = (noise - COMMUTE_NOISE_BASELINE) * COMMUTE_COMPENSATION_SCALE
 }
 ```
+
+### Public API Safety Standards
+```kotlin
+// ❌ BAD: TODO() in public API can crash the application
+suspend fun generatePlaylist(seeds: List<String>): List<String> {
+    TODO("Not implemented yet") // This will crash when called!
+}
+
+// ❌ BAD: Poor grammar in log messages
+Log.w(TAG, "Models not loaded") // Should be "are not loaded"
+
+// ✅ GOOD: Safe placeholder with logging and graceful fallback
+suspend fun generatePlaylist(seeds: List<String>): List<String> {
+    Log.w(TAG, "generatePlaylist is not yet implemented. Returning empty playlist. Planned implementation: Q1 2025.")
+    return emptyList()
+}
+
+// ✅ GOOD: Proper grammar in log messages
+Log.w(TAG, "Neural audio processor models are not loaded. Skipping enhancement.")
+```
+
+**Public API Safety Rules:**
+- Never use `TODO()` or `NotImplementedError()` in public methods
+- Always provide safe fallback return values (empty lists, null, default objects)
+- Log warnings about incomplete functionality with implementation timeline
+- Update KDoc to reflect actual behavior: `@return Empty list until implementation complete`
+- Use proper grammar in user-facing log messages
 
 These patterns ensure Copilot reviews pass and maintain professional code quality standards.
 

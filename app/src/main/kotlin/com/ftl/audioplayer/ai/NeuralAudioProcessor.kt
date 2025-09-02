@@ -213,8 +213,7 @@ class NeuralAudioProcessor {
      * @param biometricContext Current user context
      * @param targetMood Optional target mood for playlist
      * @param playlistLength Number of tracks to generate (max 100)
-     * @return List of recommended track IDs
-     * @throws NotImplementedError This feature is not yet implemented
+     * @return Empty list until implementation is complete (Q1 2025). Will return recommended track IDs once neural collaborative filtering is implemented.
      */
     suspend fun generateSmartPlaylist(
         seedTracks: List<String>, // Track IDs
@@ -229,7 +228,8 @@ class NeuralAudioProcessor {
         
         // Neural collaborative filtering approach
         // Considers user preferences, current context, and music similarity
-        TODO("Implement neural collaborative filtering for smart playlist generation using TensorFlow Lite. Will analyze user listening history, current biometric context (heart rate, activity), and audio similarity vectors to generate contextually appropriate playlists. Planned implementation: Q1 2025.")
+        Log.w(TAG, "generateSmartPlaylist is not yet implemented. Returning empty playlist. Planned implementation: Q1 2025.")
+        return emptyList()
     }
     
     /**
@@ -249,7 +249,7 @@ class NeuralAudioProcessor {
         check(isInitialized) { "Neural processor must be initialized before audio enhancement" }
         
         if (!modelsLoaded) {
-            Log.w(TAG, "Neural audio processor models not loaded. Skipping enhancement and returning original buffer.")
+            Log.w(TAG, "Neural audio processor models are not loaded. Skipping enhancement and returning original buffer.")
             return audioBuffer
         }
         
