@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Include/exclude rules for backup -->
+    <exclude domain="sharedpref" path="device_prefs.xml"/>
+    <exclude domain="database" path="audio_cache.db"/>
+</full-backup-content>

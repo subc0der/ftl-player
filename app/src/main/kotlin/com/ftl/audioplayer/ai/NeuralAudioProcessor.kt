@@ -21,6 +21,8 @@ package com.ftl.audioplayer.ai
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Neural network audio analysis results
@@ -84,7 +86,10 @@ enum class LocationType {
  * Handles all AI-powered audio analysis and enhancement features
  * using TensorFlow Lite models for on-device processing
  */
-class NeuralAudioProcessor {
+@Singleton
+class NeuralAudioProcessor @Inject constructor(
+    private val modelManager: TensorFlowLiteModelManager
+) {
     
     companion object {
         private const val TAG = "NeuralAudioProcessor"
@@ -120,23 +125,27 @@ class NeuralAudioProcessor {
         if (isInitialized) return
         
         try {
-            // Load neural network models:
-            // 1. Genre classification model
-            // 2. Mood detection model  
-            // 3. Audio feature extraction model
-            // 4. EQ suggestion model
+            Log.i(TAG, "Initializing Neural Audio Processor...")
             
-            // TODO: Add actual model loading code here
-            // loadGenreClassificationModel()
-            // loadMoodDetectionModel()
-            // loadAudioFeatureExtractionModel()
-            // loadEQSuggestionModel()
+            // Initialize TensorFlow Lite model manager
+            modelManager.initializeModels()
+            
+            // Check if at least one model was loaded successfully
+            val modelStatus = modelManager.getModelStatus()
+            modelsLoaded = modelManager.areModelsLoaded()
+            
+            if (modelsLoaded) {
+                Log.i(TAG, "Neural Audio Processor initialized successfully")
+                Log.d(TAG, "Model status: $modelStatus")
+            } else {
+                Log.w(TAG, "No TensorFlow Lite models were loaded successfully")
+            }
 
-            modelsLoaded = true
             isInitialized = true
         } catch (e: Exception) {
             isInitialized = false
             modelsLoaded = false
+            Log.e(TAG, "Failed to initialize Neural Audio Processor: ${e.message}")
             throw RuntimeException("Failed to initialize NeuralAudioProcessor: ${e.message}", e)
         }
     }
@@ -270,25 +279,121 @@ class NeuralAudioProcessor {
         _biometricContext.value = context
     }
     
+    /**
+     * Get current model loading status
+     */
+    fun getModelStatus(): ModelStatus? {
+        return if (isInitialized) modelManager.getModelStatus() else null
+    }
+    
+    /**
+     * Cleanup resources when processor is no longer needed
+     */
+    fun cleanup() {
+        if (isInitialized) {
+            modelManager.cleanupResources()
+            isInitialized = false
+            modelsLoaded = false
+            Log.i(TAG, "Neural Audio Processor cleaned up")
+        }
+    }
+    
     // Private helper methods for neural network processing
     
     private suspend fun extractAudioFeatures(
         audioBuffer: FloatArray, 
         sampleRate: Int
     ): FloatArray {
-        // Extract MFCC, spectral centroid, zero crossing rate, etc.
-        // Returns placeholder feature vector until TensorFlow Lite models are integrated
-        return FloatArray(AUDIO_FEATURE_VECTOR_SIZE) { 0.0f }
+        return if (modelsLoaded) {
+            // Use TensorFlow Lite model for audio feature extraction
+            modelManager.extractAudioFeatures(audioBuffer)
+        } else {
+            // Fallback: Extract basic features manually
+            extractBasicAudioFeatures(audioBuffer, sampleRate)
+        }
+    }
+    
+    private fun extractBasicAudioFeatures(
+        audioBuffer: FloatArray,
+        sampleRate: Int
+    ): FloatArray {
+        // Basic feature extraction without ML models
+        // Extract simple statistical features as fallback
+        val features = FloatArray(AUDIO_FEATURE_VECTOR_SIZE) { 0.0f }
+        
+        if (audioBuffer.isNotEmpty()) {
+            // Basic statistical features
+            features[0] = audioBuffer.average().toFloat()  // Mean amplitude
+            features[1] = audioBuffer.maxOrNull() ?: 0.0f  // Peak amplitude
+            features[2] = calculateRMS(audioBuffer)        // RMS energy
+            features[3] = calculateZeroCrossingRate(audioBuffer) // Zero crossing rate
+            
+            // Fill remaining features with computed variations
+            for (i in 4 until AUDIO_FEATURE_VECTOR_SIZE) {
+                features[i] = (features[i % 4] * (i + 1)) / AUDIO_FEATURE_VECTOR_SIZE
+            }
+        }
+        
+        return features
+    }
+    
+    private fun calculateRMS(buffer: FloatArray): Float {
+        val sumSquares = buffer.map { it * it }.sum()
+        return kotlin.math.sqrt(sumSquares / buffer.size).toFloat()
+    }
+    
+    private fun calculateZeroCrossingRate(buffer: FloatArray): Float {
+        var crossings = 0
+        for (i in 1 until buffer.size) {
+            if ((buffer[i-1] >= 0) != (buffer[i] >= 0)) {
+                crossings++
+            }
+        }
+        return crossings.toFloat() / buffer.size
     }
     
     private suspend fun classifyGenre(features: FloatArray): Pair<String, Float> {
-        // TensorFlow Lite genre classification
-        return "Electronic" to 0.85f
+        return if (modelsLoaded) {
+            modelManager.classifyGenre(features)
+        } else {
+            // Fallback classification based on basic features
+            classifyGenreFallback(features)
+        }
+    }
+    
+    private fun classifyGenreFallback(features: FloatArray): Pair<String, Float> {
+        // Simple genre classification based on energy and frequency characteristics
+        val energy = features.getOrElse(2) { 0.0f }  // RMS energy
+        val zeroCrossingRate = features.getOrElse(3) { 0.0f }
+        
+        return when {
+            energy > 0.7f && zeroCrossingRate > 0.1f -> "Electronic" to 0.6f
+            energy > 0.5f && zeroCrossingRate < 0.05f -> "Rock" to 0.55f
+            energy < 0.3f && zeroCrossingRate < 0.03f -> "Classical" to 0.5f
+            else -> "Pop" to 0.4f
+        }
     }
     
     private suspend fun detectMood(features: FloatArray): Pair<AudioMood, Float> {
-        // TensorFlow Lite mood detection
-        return AudioMood.ENERGETIC to 0.78f
+        return if (modelsLoaded) {
+            modelManager.detectMood(features)
+        } else {
+            // Fallback mood detection based on basic features
+            detectMoodFallback(features)
+        }
+    }
+    
+    private fun detectMoodFallback(features: FloatArray): Pair<AudioMood, Float> {
+        // Simple mood detection based on energy characteristics
+        val energy = features.getOrElse(2) { 0.0f }  // RMS energy
+        val peakAmplitude = features.getOrElse(1) { 0.0f }
+        
+        return when {
+            energy > 0.7f && peakAmplitude > 0.8f -> AudioMood.ENERGETIC to 0.6f
+            energy < 0.3f && peakAmplitude < 0.4f -> AudioMood.RELAXED to 0.55f
+            energy in 0.3f..0.6f -> AudioMood.FOCUSED to 0.5f
+            else -> AudioMood.NEUTRAL to 0.4f
+        }
     }
     
     private suspend fun extractMusicFeatures(features: FloatArray): MusicFeatures {
@@ -304,8 +409,27 @@ class NeuralAudioProcessor {
     }
     
     private suspend fun generateEQSuggestion(features: FloatArray): List<Float> {
-        // Neural network EQ optimization
-        return List(EQ_BANDS_COUNT) { 0.0f } // Flat EQ as baseline
+        return if (modelsLoaded) {
+            modelManager.generateEQSuggestions(features).toList()
+        } else {
+            // Fallback EQ suggestion based on basic analysis
+            generateEQSuggestionFallback(features)
+        }
+    }
+    
+    private fun generateEQSuggestionFallback(features: FloatArray): List<Float> {
+        // Basic EQ suggestions based on energy distribution
+        val energy = features.getOrElse(2) { 0.0f }
+        val peakAmplitude = features.getOrElse(1) { 0.0f }
+        
+        return List(EQ_BANDS_COUNT) { bandIndex ->
+            when (bandIndex) {
+                in 0..5 -> if (energy > 0.6f) 1.0f else 0.0f  // Bass boost for energetic content
+                in 6..15 -> 0.0f  // Flat mids
+                in 16..25 -> if (peakAmplitude > 0.7f) 0.5f else 0.0f  // Slight treble enhancement
+                else -> 0.0f  // High frequencies flat
+            }
+        }
     }
     
     // Biometric-specific EQ enhancement functions

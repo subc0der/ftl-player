@@ -1,0 +1,11 @@
+# TensorFlow Lite Models Placeholder
+
+This directory will contain the following TensorFlow Lite models:
+
+1. genre_classification.tflite - Neural network for audio genre classification
+2. mood_detection.tflite - Neural network for mood detection from audio features  
+3. audio_features.tflite - Feature extraction model for MFCC and spectral analysis
+4. eq_optimization.tflite - Neural EQ suggestion model based on content analysis
+
+Models will be trained and added in the next development phase.
+For now, the system uses fallback algorithms for basic functionality.
