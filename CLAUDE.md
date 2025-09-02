@@ -437,6 +437,32 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 
 These patterns ensure Copilot reviews pass and maintain professional code quality standards.
 
+### Build Artifacts and Repository Management
+```
+# ❌ NEVER commit build artifacts to GitHub
+git add app/build/outputs/apk/debug/app-debug.apk  # 109MB file - too large!
+git add app/build/intermediates/                   # Thousands of generated files
+
+# ✅ ALWAYS exclude build artifacts in .gitignore
+*.apk
+*.aab
+build/
+.gradle/
+```
+
+**Why APK files should NEVER be committed:**
+- **Size**: APK files can be 50-100MB+, exceeding GitHub's limits
+- **Regeneratable**: Build artifacts can always be recreated from source
+- **Repository bloat**: Each APK commit adds massive size to git history
+- **Platform-specific**: Not useful for other developers or CI/CD
+- **Frequent changes**: Every build creates a different binary
+
+**Proper artifact management:**
+- Use `.gitignore` to exclude all build artifacts
+- Store release APKs in `/apk-test-packages` directory for testing (also excluded from git)
+- Use GitHub Releases or CI/CD for distributing builds
+- Keep repository focused on source code only
+
 ---
 
 *This document serves as the living guide for the FTL Hi-Res Audio Player project development. It should be updated regularly as the project evolves and new insights are gained through AI-assisted development.*
