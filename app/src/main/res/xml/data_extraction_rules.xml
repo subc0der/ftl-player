@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Audio settings and preferences -->
+        <include domain="sharedpref" path="."/>
+        <!-- Exclude sensitive data -->
+        <exclude domain="sharedpref" path="neural_ai_cache.xml"/>
+    </cloud-backup>
+    
+    <device-transfer>
+        <!-- Allow transfer of user settings -->
+        <include domain="sharedpref" path="."/>
+        <!-- Exclude performance metrics -->
+        <exclude domain="sharedpref" path="performance_metrics.xml"/>
+    </device-transfer>
+</data-extraction-rules>

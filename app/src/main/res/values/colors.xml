@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FTL Hi-Res Audio Player - Cyberpunk Color Palette -->
+    <!-- 🎵 CYBER AQUA (#00FFFF) • NEURAL INDIGO (#4B0082) • AUDIOPHILE GRADE 🎵 -->
+    
+    <!-- Primary Cyberpunk Colors -->
+    <color name="cyber_aqua">#00FFFF</color>
+    <color name="neural_indigo">#4B0082</color>
+    <color name="neural_green">#00FF66</color>
+    <color name="cyber_purple">#9932CC</color>
+    <color name="neon_pink">#FF1493</color>
+    
+    <!-- Background Colors -->
+    <color name="pure_black">#000000</color>
+    <color name="deep_space">#0A0A0A</color>
+    <color name="neural_dark">#1A1A1A</color>
+    <color name="carbon_black">#1C1C1C</color>
+    
+    <!-- Accent Colors -->
+    <color name="warning_amber">#FFC107</color>
+    <color name="error_red">#FF5722</color>
+    <color name="success_green">#4CAF50</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0BEC5</color>
+    <color name="text_disabled">#616161</color>
+    <color name="text_accent">#00FFFF</color>
+    
+    <!-- Material Design Integration -->
+    <color name="colorPrimary">@color/cyber_aqua</color>
+    <color name="colorPrimaryVariant">@color/neural_indigo</color>
+    <color name="colorSecondary">@color/neural_green</color>
+    <color name="colorSecondaryVariant">@color/cyber_purple</color>
+    <color name="colorOnPrimary">@color/pure_black</color>
+    <color name="colorOnSecondary">@color/pure_black</color>
+    <color name="colorError">@color/error_red</color>
+    <color name="colorOnError">@color/text_primary</color>
+    <color name="colorSurface">@color/neural_dark</color>
+    <color name="colorOnSurface">@color/text_primary</color>
+    <color name="colorBackground">@color/pure_black</color>
+    <color name="colorOnBackground">@color/text_primary</color>
+    
+    <!-- Audio Visualization Colors -->
+    <color name="spectrum_low">#00FFFF</color>
+    <color name="spectrum_mid">#4B0082</color>
+    <color name="spectrum_high">#FF1493</color>
+    
+    <!-- UI Element Colors -->
+    <color name="button_primary">#00FFFF</color>
+    <color name="button_secondary">#4B0082</color>
+    <color name="slider_active">#00FFFF</color>
+    <color name="slider_inactive">#616161</color>
+    
+    <!-- Status Indicator Colors -->
+    <color name="status_ready">#4CAF50</color>
+    <color name="status_playing">#00FFFF</color>
+    <color name="status_paused">#FFC107</color>
+    <color name="status_error">#FF5722</color>
+    
+    <!-- Performance Indicator Colors -->
+    <color name="latency_good">#4CAF50</color>
+    <color name="latency_warning">#FFC107</color>
+    <color name="latency_critical">#FF5722</color>
+</resources>

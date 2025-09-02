@@ -1,0 +1,350 @@
+name: ⚡ Performance Issue
+description: Report performance problems, optimization needs, or latency issues
+title: "[PERFORMANCE] "
+labels: ["performance", "optimization", "latency", "needs-profiling"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ⚡ FTL Performance Optimization
+        
+        ```
+        ╔═══════════════════════════════════════════════════════════════╗
+        ║                 ⚡ PERFORMANCE OPTIMIZATION ⚡                ║
+        ║              Neural Audio Engine Tuning Protocol             ║
+        ║                                                               ║
+        ║    ⚡ CYBER AQUA (#00FFFF) • NEURAL INDIGO (#4B0082) ⚡      ║
+        ╚═══════════════════════════════════════════════════════════════╝
+        ```
+        
+        **Help us achieve audiophile-grade performance!** Report bottlenecks, latency issues, or optimization opportunities to maintain our <10ms total audio latency target.
+
+  - type: checkboxes
+    id: diagnostic-check
+    attributes:
+      label: 🔧 Performance Diagnostic Check
+      description: Please confirm you've run basic diagnostics
+      options:
+        - label: I have closed other apps and tested FTL Audio Player in isolation
+          required: true
+        - label: I have tested with different audio files/formats to identify patterns
+          required: true
+        - label: I have checked device storage and RAM availability
+          required: true
+        - label: I have tested with both wired and wireless audio output
+          required: false
+
+  - type: dropdown
+    id: performance-category
+    attributes:
+      label: ⚡ Performance Category
+      description: What type of performance issue are you experiencing?
+      options:
+        - 🎵 Audio Latency - Delay between input and output
+        - 🎛️ EQ Processing - Parametric equalizer performance
+        - 🖥️ UI Responsiveness - Interface lag or stuttering
+        - 🧠 Neural AI Processing - ML model inference speed
+        - 💪 Battery Drain - Excessive power consumption
+        - 🔥 CPU Usage - High processor utilization
+        - 💾 Memory Usage - RAM consumption issues
+        - 📱 App Launch Time - Slow startup performance
+        - 🔄 File Loading - Audio file processing speed
+        - 📊 Real-time Analysis - FFT/spectrum processing
+        - 🎧 Hardware Integration - DAC/headphone latency
+        - 🌐 Network Performance - Cloud sync/streaming
+        - 📈 General Sluggishness - Overall performance degradation
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 🚨 Performance Impact
+      description: How severely does this affect the audiophile experience?
+      options:
+        - 🔴 Critical - Breaks core audio experience (>50ms latency)
+        - 🟠 High - Noticeable impact on listening quality
+        - 🟡 Medium - Minor but measurable performance loss
+        - 🟢 Low - Optimization opportunity, not blocking
+        - 📊 Measurement - Data point for optimization
+    validations:
+      required: true
+
+  - type: textarea
+    id: performance-description
+    attributes:
+      label: 📊 Performance Issue Description
+      description: Detailed description of the performance problem
+      placeholder: |
+        Describe the performance issue in detail:
+        
+        - What specific operation is slow or unresponsive?
+        - How long does it currently take vs. expected time?
+        - Does it happen consistently or intermittently?
+        - What audio settings or features are active when this occurs?
+        
+        Example: "When adjusting the 32-band EQ during DSD128 playback, there's a noticeable 200-300ms delay before the audio reflects the changes. This breaks the real-time adjustment experience that audiophiles expect."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: 🔄 Performance Test Steps
+      description: Exact steps to reproduce the performance issue
+      placeholder: |
+        Step-by-step reproduction:
+        
+        1. Load specific audio file format (specify sample rate/bit depth)
+        2. Navigate to specific feature or screen
+        3. Perform specific action that triggers performance issue
+        4. Measure/observe the performance degradation
+        
+        Include any specific settings, audio formats, or conditions needed to reproduce.
+      value: |
+        1. 
+        2. 
+        3. 
+        4. 
+    validations:
+      required: true
+
+  - type: textarea
+    id: performance-metrics
+    attributes:
+      label: 📈 Performance Measurements
+      description: Quantitative data about the performance issue
+      placeholder: |
+        Measured performance data (if available):
+        
+        **Timing Measurements:**
+        - Current performance: X ms/seconds
+        - Expected performance: Y ms/seconds
+        - Baseline comparison: Z ms/seconds
+        
+        **Resource Usage:**
+        - CPU usage: X% (cores affected)
+        - Memory usage: X MB (peak/sustained)
+        - Battery drain: X% per hour
+        - Network usage: X MB/min
+        
+        **Audio Metrics:**
+        - Audio latency: X ms (input to output)
+        - Buffer underruns: X per minute
+        - Sample drops: X per session
+        - Processing jitter: X ms variance
+        
+        Use Android's built-in performance tools, battery stats, or any profiling data you have available.
+      render: yaml
+
+  - type: input
+    id: device-specs
+    attributes:
+      label: 🔧 Device Performance Profile
+      description: Complete device specifications for performance analysis
+      placeholder: "Samsung Galaxy S24 Ultra, Snapdragon 8 Gen 3, 12GB RAM, UFS 4.0 storage, Android 14, 5000mAh battery"
+    validations:
+      required: true
+
+  - type: textarea
+    id: audio-configuration
+    attributes:
+      label: 🎵 Audio Performance Configuration
+      description: Audio settings and hardware during performance issue
+      placeholder: |
+        Current audio setup when issue occurs:
+        
+        **Audio Settings:**
+        - Sample Rate: 192kHz/24-bit
+        - Buffer Size: 256 samples
+        - Audio Latency Mode: Ultra-Low
+        - Neural Processing: Enabled/Disabled
+        - EQ Bands Active: 12/32 bands
+        - Real-time Analysis: Enabled (2048-point FFT)
+        
+        **Hardware:**
+        - Output Device: USB DAC (Schiit Modi 3+)
+        - Connection Type: USB-C to USB-A
+        - Headphones: Sennheiser HD800S
+        - Power Source: Battery/Charging
+        
+        **Concurrent Features:**
+        - Biometric monitoring: Active/Inactive
+        - Playlist analysis: Running/Stopped
+        - Cloud sync: Active/Inactive
+      render: yaml
+
+  - type: textarea
+    id: system-context
+    attributes:
+      label: 🖥️ System Performance Context
+      description: Device state and other apps running during the issue
+      placeholder: |
+        System context during performance testing:
+        
+        **Device State:**
+        - Available RAM: X GB free of Y GB total
+        - Storage free: X GB available
+        - Battery level: X%
+        - Thermal state: Cool/Warm/Hot
+        - Power mode: Performance/Balanced/Battery Saver
+        
+        **Background Apps:**
+        - Other audio apps: Spotify, YouTube Music (list any running)
+        - System apps: Google Play Services, etc.
+        - Resource-intensive apps: Games, video editing, etc.
+        
+        **Network Conditions:**
+        - Connection type: WiFi/Mobile Data/Offline
+        - Network speed: X Mbps (if relevant for cloud features)
+
+  - type: textarea
+    id: expected-performance
+    attributes:
+      label: ✨ Expected Performance Target
+      description: What performance level should we achieve?
+      placeholder: |
+        Performance expectations:
+        
+        **Audio Latency Targets:**
+        - Total audio latency: <10ms (FTL Audio Player target)
+        - EQ adjustment response: <50ms
+        - File loading: <2 seconds for Hi-Res files
+        
+        **UI Responsiveness:**
+        - 120fps smooth animations
+        - <100ms response to user input
+        - Instant visual feedback for audio controls
+        
+        **Resource Efficiency:**
+        - <15% CPU usage during normal playback
+        - <200MB RAM footprint
+        - <10% battery drain per hour of playback
+        
+        Reference other high-performance audio apps or professional audio equipment if relevant.
+
+  - type: textarea
+    id: comparison-analysis
+    attributes:
+      label: 🔍 Performance Comparison
+      description: How does this compare to other audio applications?
+      placeholder: |
+        Comparative performance analysis:
+        
+        **Other Audio Apps:**
+        - App A (e.g., Poweramp): X ms latency, Y% CPU usage
+        - App B (e.g., Neutron): X ms latency, Y% CPU usage
+        - System media player: X ms latency, Y% CPU usage
+        
+        **Professional Audio Tools:**
+        - DAW software: X ms latency
+        - Hardware DAC direct: X ms latency
+        - Professional audio interfaces: X ms latency
+        
+        **Baseline Performance:**
+        - Same device with simpler audio: X ms
+        - Different device with same settings: X ms
+
+  - type: textarea
+    id: profiling-data
+    attributes:
+      label: 📊 Profiling & Debug Data
+      description: Any technical profiling data or debug logs
+      placeholder: |
+        Technical profiling information:
+        
+        **Android Profiler Data:**
+        - CPU profiling traces
+        - Memory allocation patterns
+        - Network usage patterns
+        - Battery consumption details
+        
+        **Audio System Logs:**
+        - AudioFlinger logs
+        - MediaPlayer error messages
+        - Audio policy manager logs
+        - HAL (Hardware Abstraction Layer) logs
+        
+        **App-Specific Logs:**
+        - Custom performance logging
+        - Neural network inference times
+        - DSP processing benchmarks
+        - Real-time audio pipeline metrics
+        
+        Paste any relevant log snippets or profiling data.
+      render: shell
+
+  - type: textarea
+    id: optimization-suggestions
+    attributes:
+      label: 💡 Optimization Ideas
+      description: Your suggestions for improving performance
+      placeholder: |
+        Performance optimization suggestions:
+        
+        **Code-Level Optimizations:**
+        - Algorithm improvements
+        - Memory management enhancements  
+        - Threading optimizations
+        - Caching strategies
+        
+        **Architecture Changes:**
+        - Component redesign suggestions
+        - Data flow optimizations
+        - Resource pooling opportunities
+        - Background processing improvements
+        
+        **User-Configurable Options:**
+        - Performance vs. quality trade-offs
+        - Resource usage controls
+        - Advanced settings for power users
+        - Automatic performance adjustment
+
+  - type: checkboxes
+    id: testing-verification
+    attributes:
+      label: ⚡ Performance Testing Verification
+      description: Confirm your testing methodology
+      options:
+        - label: I have tested across multiple audio formats and sample rates
+          required: true
+        - label: I have provided quantitative measurements where possible
+          required: true
+        - label: I have tested with different device configurations
+          required: false
+        - label: I have compared performance with other audio applications
+          required: false
+        - label: I am willing to test performance fixes and provide feedback
+          required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        **🤖 Performance Analysis Initiated**
+        
+        Your performance report has been submitted to our neural optimization systems! The data will be analyzed using:
+        
+        ```
+        ┌─────────────────────────────────────────────┐
+        │  ⚡ PERFORMANCE ANALYSIS PROTOCOL ACTIVE ⚡  │
+        │                                             │
+        │  • Audio Latency Profiling                 │
+        │  • CPU/Memory Usage Analysis               │
+        │  • Neural Network Optimization Review      │
+        │  • Device-Specific Performance Mapping     │
+        │  • Real-time Processing Optimization       │
+        └─────────────────────────────────────────────┘
+        ```
+        
+        **Performance Targets:**
+        - 🎵 Audio Latency: <10ms total pipeline
+        - 🖥️ UI Responsiveness: 120fps cyberpunk animations
+        - 💪 Battery Efficiency: <10% drain per hour
+        - 🧠 Neural Processing: <50ms inference time
+        - 🔧 Memory Usage: <200MB footprint
+        
+        Our AI-assisted development process will prioritize optimizations based on impact to the audiophile experience. Thank you for helping us achieve neural audio perfection! ⚡🎵

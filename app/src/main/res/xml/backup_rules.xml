@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Include user settings and configurations -->
+    <include domain="sharedpref" path="."/>
+    
+    <!-- Exclude temporary and cache files -->
+    <exclude domain="file" path="neural_cache"/>
+    <exclude domain="file" path="audio_analysis_temp"/>
+    
+    <!-- Exclude sensitive performance data -->
+    <exclude domain="sharedpref" path="performance_metrics.xml"/>
+    <exclude domain="sharedpref" path="device_fingerprint.xml"/>
+</full-backup-content>

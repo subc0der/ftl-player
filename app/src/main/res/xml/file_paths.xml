@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Internal storage paths for file sharing -->
+    <files-path name="internal_files" path="."/>
+    
+    <!-- Cache directory for temporary files -->
+    <cache-path name="cache" path="."/>
+    
+    <!-- External files directory for exported audio files -->
+    <external-files-path name="external_files" path="."/>
+    
+    <!-- Audio export directory -->
+    <external-files-path name="audio_exports" path="exports/"/>
+</paths>

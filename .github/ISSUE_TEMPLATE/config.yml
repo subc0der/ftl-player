@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Complete Documentation Hub
+    url: https://github.com/subc0der/ftl-player/blob/main/CLAUDE.md
+    about: Read the comprehensive project documentation and AI-assisted development guidelines
+  - name: 🎵 Audiophile Community Discussions
+    url: https://github.com/subc0der/ftl-player/discussions
+    about: Join audiophile discussions, share EQ presets, and collaborate on neural audio experiences
+  - name: 🤖 Neural Audio Development Process
+    url: https://github.com/subc0der/ftl-player/blob/main/README.md#-ai-assisted-development
+    about: Learn about our revolutionary AI-assisted development process with Claude Code
+  - name: ⚡ Performance Benchmarks & Metrics
+    url: https://github.com/subc0der/ftl-player/blob/main/docs/
+    about: View audio latency targets, neural processing benchmarks, and audiophile specifications
+  - name: 🎛️ 32-Band EQ Configuration Guide
+    url: https://github.com/subc0der/ftl-player/blob/main/docs/ftl_custom_settings_spec.md
+    about: Master the professional parametric equalizer with Q-factor controls and neural suggestions
