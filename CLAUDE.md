@@ -459,10 +459,12 @@ build/
 
 **Proper artifact management:**
 - Use `.gitignore` to exclude all build artifacts
-- Store release APKs in `/apk-test-packages` directory for testing (excluded from git)
+- Store test APKs in `/apk-test-packages` directory following naming conventions (excluded from git)
 - Store development assets in `/subc0der` directory (excluded from git)
+- Follow APK naming conventions: `ftl-player-v{VERSION}-{SEQUENCE}-{DESCRIPTION}.apk`
 - Use GitHub Releases or CI/CD for distributing builds
 - Keep repository focused on source code only
+- **See `/docs/APK_TESTING_GUIDE.md` for comprehensive APK management guidelines**
 
 ---
 
