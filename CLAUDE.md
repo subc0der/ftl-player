@@ -367,6 +367,49 @@ suspend fun processAudio(buffer: FloatArray, sampleRate: Int) {
 }
 ```
 
+### State vs Parameter Validation
+```kotlin
+// ❌ BAD: Using require() for state validation
+suspend fun analyzeAudio(buffer: FloatArray): Result {
+    require(isInitialized) { "Not initialized" } // Wrong - this is state, not parameter
+}
+
+// ✅ GOOD: Use check() for state, require() for parameters
+suspend fun analyzeAudio(buffer: FloatArray): Result {
+    check(isInitialized) { "Neural processor not initialized" } // State validation
+    require(buffer.isNotEmpty()) { "Audio buffer cannot be empty" } // Parameter validation
+}
+```
+
+### Silent Failures and Logging
+```kotlin
+// ❌ BAD: Silent fallback that masks issues
+fun processWithModel(data: Data): Result {
+    if (!modelLoaded) return data // Silent failure
+}
+
+// ✅ GOOD: Explicit logging for fallback behavior
+fun processWithModel(data: Data): Result {
+    if (!modelLoaded) {
+        println("Warning: Model not loaded. Skipping processing and returning input unchanged.")
+        return data
+    }
+}
+```
+
+### TODO vs NotImplementedError
+```kotlin
+// ❌ BAD: NotImplementedError for incomplete features
+suspend fun generatePlaylist(): List<String> {
+    throw NotImplementedError("Feature not implemented")
+}
+
+// ✅ GOOD: Use TODO() for incomplete implementations
+suspend fun generatePlaylist(): List<String> {
+    TODO("generatePlaylist is not yet implemented")
+}
+```
+
 ### Documentation Standards
 ```kotlin
 // ❌ BAD: Minimal documentation
@@ -385,11 +428,12 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 ```
 
 ### Key Principles
-1. **Fail Fast**: Use `require()` and `check()` for precondition validation
-2. **Explicit Errors**: Throw `NotImplementedError` instead of returning empty/null
+1. **Proper Validation**: Use `require()` for parameters, `check()` for state
+2. **Explicit Behaviors**: Log warnings for fallback behaviors, use `TODO()` for incomplete features  
 3. **Named Constants**: Replace all magic numbers with descriptive constants
 4. **Comprehensive Docs**: Document all parameters, return values, and exceptions
 5. **Graceful Degradation**: Handle initialization and resource loading failures
+6. **Clear Intent**: Make all behaviors explicit rather than silent
 
 These patterns ensure Copilot reviews pass and maintain professional code quality standards.
 

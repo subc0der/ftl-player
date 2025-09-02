@@ -142,7 +142,7 @@ class NeuralAudioProcessor {
         audioBuffer: FloatArray,
         sampleRate: Int
     ): AudioIntelligence {
-        require(isInitialized) { "Neural processor not initialized" }
+        check(isInitialized) { "Neural processor not initialized" }
         require(audioBuffer.isNotEmpty()) { "Audio buffer cannot be empty" }
         require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
         
@@ -217,7 +217,7 @@ class NeuralAudioProcessor {
         
         // Neural collaborative filtering approach
         // Considers user preferences, current context, and music similarity
-        throw NotImplementedError("generateSmartPlaylist is not yet implemented")
+        TODO("generateSmartPlaylist is not yet implemented")
     }
     
     /**
@@ -235,7 +235,10 @@ class NeuralAudioProcessor {
         require(audioBuffer.isNotEmpty()) { "Audio buffer cannot be empty" }
         require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
         
-        if (!modelsLoaded) return audioBuffer
+        if (!modelsLoaded) {
+            println("Warning: NeuralAudioProcessor models not loaded. Skipping audio enhancement and returning input buffer unchanged.")
+            return audioBuffer
+        }
         
         // Neural network audio enhancement:
         // 1. Noise reduction
