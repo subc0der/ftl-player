@@ -442,6 +442,7 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 7. **Proactive Error Handling**: Always wrap critical operations in try-catch blocks
 8. **Professional Logging**: Use Android Log with TAG constants, avoid println() in production
 9. **Clear Placeholders**: Document temporary implementations and avoid misleading comments
+10. **No Duplicate Lines**: Always review multi-line edits for accidentally duplicated content
 
 ### Logging Best Practices
 ```kotlin
@@ -475,6 +476,28 @@ return FloatArray(FEATURE_SIZE) // Configurable feature vector size (but it's ac
 // Returns placeholder feature vector until TensorFlow Lite models are integrated
 return FloatArray(AUDIO_FEATURE_VECTOR_SIZE) { 0.0f }
 ```
+
+### Multi-line Edit Quality Control
+```kotlin
+// ❌ BAD: Duplicate lines from careless multi-line edits
+private fun processAudio() {
+    // Extract audio features
+    // Extract audio features  // <-- Duplicate comment
+    return processedData
+}
+
+// ✅ GOOD: Clean, reviewed multi-line edits
+private fun processAudio() {
+    // Extract audio features and process with ML models
+    return processedData
+}
+```
+
+**Prevention strategies:**
+- Always review the final diff after multi-line edits
+- Use specific search patterns to find duplicates: `grep -n "^\s*//.*" file.kt | sort | uniq -d`
+- When using MultiEdit tool, verify each edit individually
+- Copilot reviews catch these but prevention is better
 
 These patterns ensure Copilot reviews pass and maintain professional code quality standards.
 
