@@ -1,10 +1,20 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git checkout:*)",
-      "Bash(git config:*)",
-      "Bash(gh repo set-default:*)",
+      "Bash(git push:*)",
+      "Bash(./gradlew test:*)",
+      "Bash(./gradlew:*)",
+      "Bash(git reset:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr view:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(gh pr checkout:*)",
+      "Bash(gh api:*)",
+      "Bash(gh pr status:*)",
+      "Bash(gh pr diff:*)",
       "Bash(git add:*)",
+      "Bash(git checkout:*)",
       "Bash(git commit:*)",
       "Bash(git merge:*)"
     ],
