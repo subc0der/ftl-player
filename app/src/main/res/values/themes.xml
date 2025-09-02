@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+<<<<<<< HEAD
     <!-- Base application theme. -->
     <style name="Theme.FTLAudioPlayer" parent="Theme.Material3.DayNight">
         <!-- Customize your theme here. -->
@@ -10,5 +11,31 @@
         <item name="colorSecondary">@color/ftl_secondary</item>
         <item name="colorOnSecondary">@color/ftl_on_secondary</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+=======
+    <!-- FTL Hi-Res Audio Player - Cyberpunk Theme -->
+    <!-- 🎵 CYBER AQUA (#00FFFF) • NEURAL INDIGO (#4B0082) • AUDIOPHILE GRADE 🎵 -->
+    
+    <style name="Theme.FTLAudio" parent="android:Theme.Material.NoActionBar">
+        <!-- Primary Colors -->
+        <item name="android:colorPrimary">@color/cyber_aqua</item>
+        <item name="android:colorPrimaryDark">@color/neural_indigo</item>
+        <item name="android:colorAccent">@color/neural_green</item>
+        
+        <!-- Background Colors -->
+        <item name="android:colorBackground">@color/pure_black</item>
+        <item name="android:windowBackground">@color/pure_black</item>
+        
+        <!-- Text Colors -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        
+        <!-- System UI -->
+        <item name="android:statusBarColor">@color/pure_black</item>
+        <item name="android:navigationBarColor">@color/pure_black</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        
+        <!-- Custom Attributes -->
+        <item name="android:fontFamily">monospace</item>
+>>>>>>> feature/core-audio-engine
     </style>
 </resources>

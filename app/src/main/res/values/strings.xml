@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< HEAD
     <string name="app_name">FTL Hi-Res Audio Player</string>
     <string name="app_description">AI-Powered Audiophile Music Player</string>
     
@@ -27,4 +28,46 @@
     <string name="activity_sleeping">Sleeping</string>
     <string name="activity_walking">Walking</string>
     <string name="activity_running">Running</string>
+=======
+    <!-- FTL Hi-Res Audio Player Strings -->
+    <!-- 🎵 CYBER AQUA (#00FFFF) • NEURAL INDIGO (#4B0082) • AUDIOPHILE GRADE 🎵 -->
+    
+    <string name="app_name">FTL Audio Player</string>
+    <string name="app_title">FTL Hi-Res Audio Player</string>
+    <string name="app_subtitle">Neural-Enhanced Audiophile Experience</string>
+    
+    <!-- Performance Status -->
+    <string name="status_initializing">Initializing Neural Audio Engine…</string>
+    <string name="status_ready">Audio Engine Ready</string>
+    <string name="status_playing">Playing Neural-Enhanced Audio</string>
+    <string name="status_paused">Audio Paused</string>
+    <string name="status_error">Audio Engine Error</string>
+    
+    <!-- Latency Information -->
+    <string name="latency_target">Target: &lt;10ms</string>
+    <string name="latency_low">✅ Low Latency Achieved</string>
+    <string name="latency_high">⚠️ High Latency Detected</string>
+    
+    <!-- Audio Specifications -->
+    <string name="audio_sample_rate">Sample Rate: %d Hz</string>
+    <string name="audio_bit_depth">Bit Depth: %d bit</string>
+    <string name="audio_channels">Channels: %d</string>
+    <string name="audio_buffer_size">Buffer: %d frames</string>
+    
+    <!-- Performance Metrics -->
+    <string name="metrics_cpu_usage">CPU: %.2f%%</string>
+    <string name="metrics_memory_usage">Memory: %.2f MB</string>
+    <string name="metrics_callback_count">Callbacks: %d</string>
+    <string name="metrics_underruns">Underruns: %d</string>
+    
+    <!-- Errors -->
+    <string name="error_initialization_failed">Audio engine initialization failed</string>
+    <string name="error_playback_failed">Playback failed to start</string>
+    <string name="error_hardware_unavailable">Audio hardware unavailable</string>
+    <string name="error_latency_too_high">Audio latency exceeds target</string>
+    
+    <!-- Permissions -->
+    <string name="permission_audio_required">Audio permissions required for playback</string>
+    <string name="permission_storage_required">Storage access needed for music files</string>
+>>>>>>> feature/core-audio-engine
 </resources>
