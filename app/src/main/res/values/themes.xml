@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-<<<<<<< HEAD
-    <!-- Base application theme. -->
-    <style name="Theme.FTLAudioPlayer" parent="Theme.Material3.DayNight">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/ftl_primary</item>
-        <item name="colorOnPrimary">@color/ftl_on_primary</item>
-        <item name="colorPrimaryContainer">@color/ftl_primary_container</item>
-        <item name="colorOnPrimaryContainer">@color/ftl_on_primary_container</item>
-        <item name="colorSecondary">@color/ftl_secondary</item>
-        <item name="colorOnSecondary">@color/ftl_on_secondary</item>
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-=======
     <!-- FTL Hi-Res Audio Player - Cyberpunk Theme -->
     <!-- 🎵 CYBER AQUA (#00FFFF) • NEURAL INDIGO (#4B0082) • AUDIOPHILE GRADE 🎵 -->
     
@@ -36,6 +24,5 @@
         
         <!-- Custom Attributes -->
         <item name="android:fontFamily">monospace</item>
->>>>>>> feature/core-audio-engine
     </style>
 </resources>

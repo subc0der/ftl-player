@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-extraction-rules>
     <cloud-backup>
-<<<<<<< HEAD
-        <exclude domain="sharedpref" path="device_prefs.xml"/>
-        <exclude domain="database" path="audio_cache.db"/>
-    </cloud-backup>
-    <device-transfer>
-        <exclude domain="sharedpref" path="device_prefs.xml"/>
-=======
         <!-- Audio settings and preferences -->
         <include domain="sharedpref" path="."/>
         <!-- Exclude sensitive data -->
@@ -19,6 +12,5 @@
         <include domain="sharedpref" path="."/>
         <!-- Exclude performance metrics -->
         <exclude domain="sharedpref" path="performance_metrics.xml"/>
->>>>>>> feature/core-audio-engine
     </device-transfer>
 </data-extraction-rules>

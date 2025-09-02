@@ -1,22 +1,3 @@
-<<<<<<< HEAD
-# CMakeLists.txt for FTL Audio Engine
-cmake_minimum_required(VERSION 3.22.1)
-
-project("ftl_audio_engine")
-
-# Add the audio engine library
-add_library(
-    ftl_audio_engine
-    SHARED
-    ftl_audio_engine.cpp
-)
-
-# Find required libraries
-find_library(log-lib log)
-find_library(android-lib android)
-
-# Link libraries
-=======
 # ╔══════════════════════════════════════════════════════════════╗
 # ║            FTL AUDIO ENGINE - CMAKE BUILD SYSTEM            ║
 # ║              Neural-Enhanced C++ Audio Processing           ║
@@ -131,14 +112,10 @@ add_library(
 # LINKED LIBRARIES
 # ═══════════════════════════════════════════════════════════════════════════════════
 
->>>>>>> feature/core-audio-engine
 target_link_libraries(
     ftl_audio_engine
     ${log-lib}
     ${android-lib}
-<<<<<<< HEAD
-)
-=======
     ${aaudio-lib}
     ${opensles-lib}
     atomic
@@ -176,4 +153,3 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     set_target_properties(ftl_audio_engine PROPERTIES LINK_FLAGS_RELEASE -s)
 endif()
->>>>>>> feature/core-audio-engine
