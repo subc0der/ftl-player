@@ -69,12 +69,33 @@ val testBuffer = FloatArray(2000) { index ->
 }
 ```
 
+### ⚠️ **Copilot Version Lag Awareness**
+**Issue:** GitHub Copilot reviews are based on specific commit snapshots, not real-time code
+**Manifestation:** Copilot reports issues that have already been fixed in later commits
+**Found in:** PR #4 - Second round of comments referenced old commit `3ec2b45` when fixes were in `c15e577`
+**Solution:** Always verify current code state before applying Copilot suggestions
+```bash
+# Always check current state first
+git log --oneline -5
+grep -n "pattern" file.kt  # Verify if issue still exists
+
+# If already fixed, document success of proactive approach
+```
+
 ### 📋 **Copilot Review Best Practices**
 1. **Proactively search for similar patterns** across entire codebase when fixing issues
 2. **Performance validation in audio paths** - avoid heavy exception handling
 3. **Extract JNI signatures** to maintainable named constants
 4. **Pre-calculate loop constants** for mathematical operations
 5. **Test build after each fix** to ensure no regressions
+6. **Version lag awareness** - verify current code before applying suggestions
+7. **Proactive fixing prevents review cycles** - systematic pattern fixing reduces iterations
+
+### 🎉 **Successful Proactive Approach Example**
+**Scenario:** PR #4 Copilot review cycle
+**Round 1:** Fixed 3 performance issues + searched for similar patterns across codebase
+**Round 2:** Copilot reported same 3 issues (version lag) - all were already fixed!
+**Result:** ✅ Proactive approach eliminated additional review cycles
 
 ### ✅ **Use Professional Gradle Configuration**
 **Lesson:** Modern Gradle with version catalogs (libs.versions.toml) prevents dependency conflicts
