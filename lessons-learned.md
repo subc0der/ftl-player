@@ -19,6 +19,63 @@
 **Issue:** Mixed folder hierarchies can break Clean Architecture patterns
 **Solution:** Maintain consistent separation between data/domain/presentation layers
 
+---
+
+## GitHub Copilot Performance Issues
+
+### ❌ **Performance-Critical Code Validation**
+**Issue:** Using `require()` calls in audio processing paths introduces exception overhead
+**Found in:** `AudioEngine.kt:processAudioBuffer()`, `NeuralAudioProcessor.kt:analyzeAudio()`, `NeuralAudioProcessor.kt:enhanceAudioQuality()`
+**Performance Impact:** Exception creation, string formatting, and stack traces in real-time audio callbacks
+**Solution:** Use lightweight validation in performance-critical paths:
+```kotlin
+// ❌ BAD - Heavy exception overhead
+require(audioBuffer.isNotEmpty()) { "Audio buffer cannot be empty" }
+
+// ✅ GOOD - Lightweight validation with graceful fallback
+if (audioBuffer.isEmpty()) return null
+```
+
+### ❌ **Hardcoded JNI Signatures**
+**Issue:** Hardcoded JNI signature strings are fragile and difficult to maintain
+**Found in:** `jni_helpers.cpp:36`
+**Solution:** Extract to named constants with documentation:
+```cpp
+// ❌ BAD - Magic string that's hard to maintain
+jmethodID constructor = env->GetMethodID(clazz, "<init>", "(DDJJDDJJD)V");
+
+// ✅ GOOD - Named constant with clear documentation
+namespace JNISignatures {
+    // D = double, J = long, V = void
+    static const char* PERFORMANCE_METRICS_CONSTRUCTOR = "(DDJJDDJJD)V";
+}
+jmethodID constructor = env->GetMethodID(clazz, "<init>", JNISignatures::PERFORMANCE_METRICS_CONSTRUCTOR);
+```
+
+### ❌ **Repeated Math Calculations in Loops**
+**Issue:** Calculating same mathematical expressions repeatedly in loops wastes CPU
+**Found in:** `AudioEngineTestViewModel.kt:240` (sine wave generation)
+**Solution:** Pre-calculate constants outside loops:
+```kotlin
+// ❌ BAD - Repeated calculation in every iteration
+val testBuffer = FloatArray(2000) { index ->
+    (0.5 * sin(2.0 * PI * 440.0 * sample / 48000.0)).toFloat()
+}
+
+// ✅ GOOD - Pre-calculated constant
+val sineWaveConstant = 2.0 * PI * 440.0 / 48000.0
+val testBuffer = FloatArray(2000) { index ->
+    (0.5 * sin(sineWaveConstant * sample)).toFloat()
+}
+```
+
+### 📋 **Copilot Review Best Practices**
+1. **Proactively search for similar patterns** across entire codebase when fixing issues
+2. **Performance validation in audio paths** - avoid heavy exception handling
+3. **Extract JNI signatures** to maintainable named constants
+4. **Pre-calculate loop constants** for mathematical operations
+5. **Test build after each fix** to ensure no regressions
+
 ### ✅ **Use Professional Gradle Configuration**
 **Lesson:** Modern Gradle with version catalogs (libs.versions.toml) prevents dependency conflicts
 **Implementation:** Single dependency source with bundles for related libraries

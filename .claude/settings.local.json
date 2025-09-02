@@ -17,7 +17,14 @@
       "Bash(git checkout:*)",
       "Bash(git commit:*)",
       "Bash(git merge:*)",
-      "Bash(git cherry-pick:*)"
+      "Bash(git cherry-pick:*)",
+      "Read(C:\\c\\Users\\mkhal\\dev\\ftl-player/**)",
+      "Read(C:\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main/**)",
+      "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main/**)",
+      "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main/**)",
+      "Read(C:\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main/**)",
+      "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\cpp/**)",
+      "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)"
     ],
     "deny": [],
     "ask": []

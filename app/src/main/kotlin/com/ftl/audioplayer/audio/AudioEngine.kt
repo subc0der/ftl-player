@@ -277,9 +277,9 @@ class AudioEngine @Inject constructor(
         sampleRate: Int,
         channelCount: Int
     ): FloatArray? {
-        require(audioData.isNotEmpty()) { "Audio buffer cannot be empty" }
-        require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
-        require(channelCount > 0) { "Channel count must be positive, got: $channelCount" }
+        if (audioData.isEmpty() || sampleRate <= 0 || channelCount <= 0) {
+            return null
+        }
         
         if (_engineState.value != AudioEngineState.PLAYING && 
             _engineState.value != AudioEngineState.READY) {

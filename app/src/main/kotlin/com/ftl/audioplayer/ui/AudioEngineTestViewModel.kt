@@ -235,10 +235,11 @@ class AudioEngineTestViewModel @Inject constructor(
         
         try {
             // Create test audio buffer (1000 samples, stereo, 48kHz)
+            val sineWaveConstant = 2.0 * kotlin.math.PI * 440.0 / 48000.0
             val testBuffer = FloatArray(2000) { index ->
                 // Generate a 440Hz sine wave
                 val sample = index / STEREO_CHANNEL_DIVIDER // Sample index (stereo)
-                (0.5 * kotlin.math.sin(2.0 * kotlin.math.PI * 440.0 * sample / 48000.0)).toFloat()
+                (0.5 * kotlin.math.sin(sineWaveConstant * sample)).toFloat()
             }
             
             val processedBuffer = audioEngine.processAudioBuffer(

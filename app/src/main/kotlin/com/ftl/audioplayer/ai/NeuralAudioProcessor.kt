@@ -39,7 +39,22 @@ data class AudioIntelligence(
     val suggestedEQ: List<Float>, // 32-band EQ suggestions
     val confidence: Float,      // Model confidence 0.0 to 1.0
     val timestamp: Long = System.currentTimeMillis()
-)
+) {
+    companion object {
+        val EMPTY = AudioIntelligence(
+            genre = "Unknown",
+            mood = AudioMood.NEUTRAL,
+            tempo = 0.0f,
+            energy = 0.0f,
+            valence = 0.0f,
+            danceability = 0.0f,
+            acousticness = 0.0f,
+            instrumentalness = 0.0f,
+            suggestedEQ = emptyList(),
+            confidence = 0.0f
+        )
+    }
+}
 
 enum class AudioMood {
     ENERGETIC,      // High-energy workout, party music
@@ -164,8 +179,11 @@ class NeuralAudioProcessor @Inject constructor(
         sampleRate: Int
     ): AudioIntelligence {
         check(isInitialized) { "Neural processor not initialized" }
-        require(audioBuffer.isNotEmpty()) { "Audio buffer cannot be empty" }
-        require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
+        if (audioBuffer.isEmpty()) return AudioIntelligence.EMPTY
+        if (sampleRate <= 0) {
+            Log.w(TAG, "Invalid sample rate: $sampleRate")
+            return AudioIntelligence.EMPTY
+        }
         
         // 1. Extract audio features (MFCC, spectral features, tempo)
         val audioFeatures = extractAudioFeatures(audioBuffer, sampleRate)
@@ -230,10 +248,14 @@ class NeuralAudioProcessor @Inject constructor(
         targetMood: AudioMood? = null,
         playlistLength: Int = 20
     ): List<String> {
-        require(playlistLength <= MAX_PLAYLIST_LENGTH) { 
-            "Playlist length cannot exceed $MAX_PLAYLIST_LENGTH, got: $playlistLength" 
+        if (playlistLength > MAX_PLAYLIST_LENGTH) {
+            Log.w(TAG, "Playlist length $playlistLength exceeds maximum $MAX_PLAYLIST_LENGTH, using maximum")
+            return emptyList()
         }
-        require(seedTracks.isNotEmpty()) { "Seed tracks cannot be empty" }
+        if (seedTracks.isEmpty()) {
+            Log.w(TAG, "Cannot generate playlist with empty seed tracks")
+            return emptyList()
+        }
         
         // Neural collaborative filtering approach
         // Considers user preferences, current context, and music similarity
@@ -253,8 +275,11 @@ class NeuralAudioProcessor @Inject constructor(
         audioBuffer: FloatArray,
         sampleRate: Int
     ): FloatArray {
-        require(audioBuffer.isNotEmpty()) { "Audio buffer cannot be empty" }
-        require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
+        if (audioBuffer.isEmpty()) return floatArrayOf()
+        if (sampleRate <= 0) {
+            Log.w(TAG, "Invalid sample rate in audio enhancement: $sampleRate")
+            return audioBuffer
+        }
         check(isInitialized) { "Neural processor must be initialized before audio enhancement" }
         
         if (!modelsLoaded) {

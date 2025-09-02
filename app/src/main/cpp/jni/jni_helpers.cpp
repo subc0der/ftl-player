@@ -16,6 +16,14 @@
 
 namespace ftl_audio {
 
+// JNI Method Signatures
+namespace JNISignatures {
+    // D = double, J = long, V = void
+    // Constructor signature: cpuUsage, memoryUsage, bufferUnderruns, bufferOverruns, 
+    //                       avgProcessingTime, maxProcessingTime, callbackCount, missedCallbacks, callbackLoad
+    static const char* PERFORMANCE_METRICS_CONSTRUCTOR = "(DDJJDDJJD)V";
+}
+
 // Static field cache for performance
 std::unordered_map<std::string, jfieldID> FieldCache::fieldCache;
 std::mutex FieldCache::cacheMutex;
@@ -33,7 +41,7 @@ jobject createPerformanceMetricsObject(JNIEnv* env, const PerformanceMetrics& me
     }
     
     // Get constructor method ID (updated signature for new fields)
-    jmethodID constructor = env->GetMethodID(metricsClass, "<init>", "(DDJJDDJJD)V");
+    jmethodID constructor = env->GetMethodID(metricsClass, "<init>", JNISignatures::PERFORMANCE_METRICS_CONSTRUCTOR);
     if (!constructor) {
         LOGE("Could not find PerformanceMetrics constructor");
         env->DeleteLocalRef(metricsClass);
