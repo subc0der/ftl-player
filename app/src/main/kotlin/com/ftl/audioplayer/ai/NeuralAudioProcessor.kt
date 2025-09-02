@@ -265,8 +265,6 @@ class NeuralAudioProcessor {
         audioBuffer: FloatArray, 
         sampleRate: Int
     ): FloatArray {
-        // Extract MFCC, spectral centroid, zero crossing rate, etc.
-        // Extract MFCC, spectral centroid, zero crossing rate, etc.
         // Returns placeholder feature vector until TensorFlow Lite models are integrated
         return FloatArray(AUDIO_FEATURE_VECTOR_SIZE) { 0.0f }
     }
