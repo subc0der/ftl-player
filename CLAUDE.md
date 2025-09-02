@@ -447,6 +447,7 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 12. **Safe Public APIs**: Never use TODO() in public methods that could crash the app
 13. **Accurate Documentation**: KDoc must reflect current behavior, not future plans
 14. **Concise Documentation**: Keep KDoc focused on behavior, avoid implementation timelines
+15. **Copilot Version Awareness**: Verify current code state when addressing Copilot feedback, as reviews may reference earlier commits
 
 ### Logging Best Practices
 ```kotlin
@@ -626,6 +627,41 @@ Log.w(TAG, "Feature is not yet implemented")
 - Use consistent grammar: "is not yet implemented"
 - Keep log messages concise and focused
 - Reserve detailed explanations for code comments, not public documentation
+
+### Copilot Version Awareness Standards
+
+```kotlin
+// ⚠️ SCENARIO: Copilot flags missing error handling in initialize()
+// But checking current code shows it's already implemented properly
+
+// What Copilot may reference (earlier commit):
+suspend fun initialize() {
+    if (isInitialized) return
+    modelsLoaded = true    // ← No error handling
+    isInitialized = true
+}
+
+// What your current code actually contains:
+suspend fun initialize() {
+    if (isInitialized) return
+    try {
+        // Load neural network models
+        modelsLoaded = true
+        isInitialized = true
+    } catch (e: Exception) {
+        isInitialized = false
+        throw RuntimeException("Failed to initialize: ${e.message}", e)
+    }
+}
+```
+
+**Copilot Version Lag Rules:**
+- **Verify current state first**: Always check your actual code before applying Copilot suggestions
+- **Mark completed if resolved**: If the issue is already fixed, mark the todo as completed immediately  
+- **Still search for patterns**: Even if the specific issue is resolved, search for similar patterns elsewhere
+- **Update documentation**: Document lessons learned for future reference
+- **Commit verification**: Copilot reviews are based on specific commit snapshots, not real-time code
+- **Timeline awareness**: Reviews may be delayed by several commits, especially in active development
 
 ### Algorithm Clarity Standards
 ```kotlin
