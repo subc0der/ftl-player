@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FTL Audio Player Cyberpunk Color Palette -->
+    <color name="ftl_primary">#00FFFF</color>
+    <color name="ftl_on_primary">#000000</color>
+    <color name="ftl_primary_container">#003333</color>
+    <color name="ftl_on_primary_container">#00FFFF</color>
+    
+    <color name="ftl_secondary">#FF00FF</color>
+    <color name="ftl_on_secondary">#000000</color>
+    <color name="ftl_secondary_container">#330033</color>
+    <color name="ftl_on_secondary_container">#FF00FF</color>
+    
+    <color name="ftl_background">#0A0A0A</color>
+    <color name="ftl_on_background">#FFFFFF</color>
+    <color name="ftl_surface">#1A1A1A</color>
+    <color name="ftl_on_surface">#FFFFFF</color>
+    
+    <!-- Neon accent colors -->
+    <color name="ftl_neon_blue">#00FFFF</color>
+    <color name="ftl_neon_pink">#FF00FF</color>
+    <color name="ftl_neon_green">#00FF00</color>
+    <color name="ftl_neon_yellow">#FFFF00</color>
+    <color name="ftl_neon_purple">#8A2BE2</color>
+</resources>

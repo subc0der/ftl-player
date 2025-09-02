@@ -1,0 +1,11 @@
+{
+  "project_name": "FTL Hi-Res Audio Player",
+  "context_files": [
+    ".claude/context/claude-core-workflow.md",
+    ".claude/context/claude-architecture-standards.md", 
+    ".claude/context/claude-code-quality.md",
+    ".claude/context/lessons-learned.md"
+  ],
+  "default_context": "Always reference the project standards and lessons learned when implementing features",
+  "project_type": "android_kotlin_audio"
+}
