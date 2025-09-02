@@ -18,6 +18,7 @@ package com.ftl.audioplayer.ai
  * - Biometric-responsive audio adaptation
  */
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -86,6 +87,7 @@ enum class LocationType {
 class NeuralAudioProcessor {
     
     companion object {
+        private const val TAG = "NeuralAudioProcessor"
         private const val AUDIO_FEATURE_VECTOR_SIZE = 128
         private const val EQ_BANDS_COUNT = 32
         private const val MAX_PLAYLIST_LENGTH = 100
@@ -217,7 +219,7 @@ class NeuralAudioProcessor {
         
         // Neural collaborative filtering approach
         // Considers user preferences, current context, and music similarity
-        TODO("generateSmartPlaylist is not yet implemented")
+        TODO("Implement neural collaborative filtering for smart playlist generation using TensorFlow Lite. Will analyze user listening history, current biometric context (heart rate, activity), and audio similarity vectors to generate contextually appropriate playlists. Planned implementation: Q1 2025.")
     }
     
     /**
@@ -236,7 +238,7 @@ class NeuralAudioProcessor {
         require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
         
         if (!modelsLoaded) {
-            println("Warning: NeuralAudioProcessor models not loaded. Skipping audio enhancement and returning input buffer unchanged.")
+            Log.w(TAG, "Neural audio processor models not loaded. Skipping enhancement and returning original buffer.")
             return audioBuffer
         }
         
@@ -264,7 +266,9 @@ class NeuralAudioProcessor {
         sampleRate: Int
     ): FloatArray {
         // Extract MFCC, spectral centroid, zero crossing rate, etc.
-        return FloatArray(AUDIO_FEATURE_VECTOR_SIZE) // Configurable feature vector size
+        // Extract MFCC, spectral centroid, zero crossing rate, etc.
+        // Returns placeholder feature vector until TensorFlow Lite models are integrated
+        return FloatArray(AUDIO_FEATURE_VECTOR_SIZE) { 0.0f }
     }
     
     private suspend fun classifyGenre(features: FloatArray): Pair<String, Float> {

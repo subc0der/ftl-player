@@ -404,9 +404,14 @@ suspend fun generatePlaylist(): List<String> {
     throw NotImplementedError("Feature not implemented")
 }
 
-// ✅ GOOD: Use TODO() for incomplete implementations
+// ❌ BAD: Vague TODO message
 suspend fun generatePlaylist(): List<String> {
     TODO("generatePlaylist is not yet implemented")
+}
+
+// ✅ GOOD: Detailed TODO with implementation plan and timeline
+suspend fun generatePlaylist(): List<String> {
+    TODO("Implement neural collaborative filtering for smart playlist generation using TensorFlow Lite. Will analyze user listening history, current biometric context (heart rate, activity), and audio similarity vectors to generate contextually appropriate playlists. Planned implementation: Q1 2025.")
 }
 ```
 
@@ -429,12 +434,47 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 
 ### Key Principles
 1. **Proper Validation**: Use `require()` for parameters, `check()` for state
-2. **Explicit Behaviors**: Log warnings for fallback behaviors, use `TODO()` for incomplete features  
+2. **Explicit Behaviors**: Log warnings for fallback behaviors, use detailed `TODO()` for incomplete features  
 3. **Named Constants**: Replace all magic numbers with descriptive constants
 4. **Comprehensive Docs**: Document all parameters, return values, and exceptions
 5. **Graceful Degradation**: Handle initialization and resource loading failures
 6. **Clear Intent**: Make all behaviors explicit rather than silent
 7. **Proactive Error Handling**: Always wrap critical operations in try-catch blocks
+8. **Professional Logging**: Use Android Log with TAG constants, avoid println() in production
+9. **Clear Placeholders**: Document temporary implementations and avoid misleading comments
+
+### Logging Best Practices
+```kotlin
+// ❌ BAD: Using println() for production logging
+if (!modelsLoaded) {
+    println("Warning: Models not loaded")
+    return defaultValue
+}
+
+// ✅ GOOD: Use Android Log with proper tag and level
+companion object {
+    private const val TAG = "NeuralAudioProcessor"
+}
+
+if (!modelsLoaded) {
+    Log.w(TAG, "Neural audio processor models not loaded. Skipping enhancement and returning original buffer.")
+    return defaultValue
+}
+```
+
+### Placeholder Implementation Standards
+```kotlin
+// ❌ BAD: Uninitialized arrays that may cause confusion
+return FloatArray(128) // Unclear what this represents
+
+// ❌ BAD: Misleading comments about configurability
+return FloatArray(FEATURE_SIZE) // Configurable feature vector size (but it's actually hardcoded)
+
+// ✅ GOOD: Clear placeholder documentation with explicit initialization
+// Extract MFCC, spectral centroid, zero crossing rate, etc.
+// Returns placeholder feature vector until TensorFlow Lite models are integrated
+return FloatArray(AUDIO_FEATURE_VECTOR_SIZE) { 0.0f }
+```
 
 These patterns ensure Copilot reviews pass and maintain professional code quality standards.
 
