@@ -85,6 +85,12 @@ enum class LocationType {
  */
 class NeuralAudioProcessor {
     
+    companion object {
+        private const val AUDIO_FEATURE_VECTOR_SIZE = 128
+        private const val EQ_BANDS_COUNT = 32
+        private const val MAX_PLAYLIST_LENGTH = 100
+    }
+    
     private val _currentAnalysis = MutableStateFlow<AudioIntelligence?>(null)
     val currentAnalysis: Flow<AudioIntelligence?> = _currentAnalysis
     
@@ -96,18 +102,31 @@ class NeuralAudioProcessor {
     
     /**
      * Initialize TensorFlow Lite models
+     * @throws RuntimeException if model loading fails
      */
     suspend fun initialize() {
         if (isInitialized) return
         
-        // Load neural network models:
-        // 1. Genre classification model
-        // 2. Mood detection model  
-        // 3. Audio feature extraction model
-        // 4. EQ suggestion model
-        
-        modelsLoaded = true
-        isInitialized = true
+        try {
+            // Load neural network models:
+            // 1. Genre classification model
+            // 2. Mood detection model  
+            // 3. Audio feature extraction model
+            // 4. EQ suggestion model
+            
+            // TODO: Add actual model loading code here
+            // loadGenreClassificationModel()
+            // loadMoodDetectionModel()
+            // loadAudioFeatureExtractionModel()
+            // loadEQSuggestionModel()
+
+            modelsLoaded = true
+            isInitialized = true
+        } catch (e: Exception) {
+            isInitialized = false
+            modelsLoaded = false
+            throw RuntimeException("Failed to initialize NeuralAudioProcessor: ${e.message}", e)
+        }
     }
     
     /**
@@ -116,12 +135,16 @@ class NeuralAudioProcessor {
      * @param audioBuffer Audio samples for analysis
      * @param sampleRate Sample rate of the audio
      * @return AudioIntelligence analysis results
+     * @throws IllegalArgumentException if parameters are invalid
+     * @throws IllegalStateException if processor not initialized
      */
     suspend fun analyzeAudio(
         audioBuffer: FloatArray,
         sampleRate: Int
     ): AudioIntelligence {
         require(isInitialized) { "Neural processor not initialized" }
+        require(audioBuffer.isNotEmpty()) { "Audio buffer cannot be empty" }
+        require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
         
         // 1. Extract audio features (MFCC, spectral features, tempo)
         val audioFeatures = extractAudioFeatures(audioBuffer, sampleRate)
@@ -173,6 +196,13 @@ class NeuralAudioProcessor {
     
     /**
      * Smart playlist generation based on context
+     * 
+     * @param seedTracks Track IDs to base recommendations on
+     * @param biometricContext Current user context
+     * @param targetMood Optional target mood for playlist
+     * @param playlistLength Number of tracks to generate (max 100)
+     * @return List of recommended track IDs
+     * @throws NotImplementedError This feature is not yet implemented
      */
     suspend fun generateSmartPlaylist(
         seedTracks: List<String>, // Track IDs
@@ -180,18 +210,31 @@ class NeuralAudioProcessor {
         targetMood: AudioMood? = null,
         playlistLength: Int = 20
     ): List<String> {
+        require(playlistLength <= MAX_PLAYLIST_LENGTH) { 
+            "Playlist length cannot exceed $MAX_PLAYLIST_LENGTH, got: $playlistLength" 
+        }
+        require(seedTracks.isNotEmpty()) { "Seed tracks cannot be empty" }
+        
         // Neural collaborative filtering approach
         // Considers user preferences, current context, and music similarity
-        return emptyList() // Implementation pending
+        throw NotImplementedError("generateSmartPlaylist is not yet implemented")
     }
     
     /**
      * Real-time audio enhancement using neural networks
+     * 
+     * @param audioBuffer Input audio samples to enhance
+     * @param sampleRate Sample rate of the audio
+     * @return Enhanced audio buffer
+     * @throws IllegalArgumentException if parameters are invalid
      */
     suspend fun enhanceAudioQuality(
         audioBuffer: FloatArray,
         sampleRate: Int
     ): FloatArray {
+        require(audioBuffer.isNotEmpty()) { "Audio buffer cannot be empty" }
+        require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
+        
         if (!modelsLoaded) return audioBuffer
         
         // Neural network audio enhancement:
@@ -200,7 +243,8 @@ class NeuralAudioProcessor {
         // 3. Harmonic enhancement
         // 4. Spatial audio processing
         
-        return audioBuffer // Placeholder - will integrate with native processing
+        // TODO: Implement actual neural network audio enhancement
+        return audioBuffer // Will integrate with native processing once models are loaded
     }
     
     /**
@@ -217,7 +261,7 @@ class NeuralAudioProcessor {
         sampleRate: Int
     ): FloatArray {
         // Extract MFCC, spectral centroid, zero crossing rate, etc.
-        return FloatArray(128) // 128-dimensional feature vector
+        return FloatArray(AUDIO_FEATURE_VECTOR_SIZE) // Configurable feature vector size
     }
     
     private suspend fun classifyGenre(features: FloatArray): Pair<String, Float> {
@@ -244,7 +288,7 @@ class NeuralAudioProcessor {
     
     private suspend fun generateEQSuggestion(features: FloatArray): List<Float> {
         // Neural network EQ optimization
-        return List(32) { 0.0f } // Flat EQ as baseline
+        return List(EQ_BANDS_COUNT) { 0.0f } // Flat EQ as baseline
     }
     
     // Biometric-specific EQ enhancement functions

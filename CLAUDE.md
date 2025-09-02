@@ -298,6 +298,101 @@ Room Database:
 - **User community building** around the product
 - **Feedback collection** and feature request management
 
+## GitHub Copilot Best Practices
+
+Based on our AI-assisted development experience, follow these patterns to avoid Copilot issues and ensure code quality:
+
+### Error Handling Standards
+```kotlin
+// ❌ BAD: Missing error handling in critical functions
+suspend fun initialize() {
+    // Load models without try-catch
+    modelsLoaded = true
+}
+
+// ✅ GOOD: Comprehensive error handling
+suspend fun initialize() {
+    if (isInitialized) return
+    try {
+        // Model loading operations
+        modelsLoaded = true
+        isInitialized = true
+    } catch (e: Exception) {
+        isInitialized = false
+        throw RuntimeException("Failed to initialize: ${e.message}", e)
+    }
+}
+```
+
+### Placeholder Implementation Patterns
+```kotlin
+// ❌ BAD: Silent empty returns that hide incomplete features
+suspend fun generatePlaylist(): List<String> {
+    return emptyList() // Implementation pending
+}
+
+// ✅ GOOD: Explicit not-implemented errors
+suspend fun generatePlaylist(): List<String> {
+    throw NotImplementedError("generatePlaylist is not yet implemented")
+}
+```
+
+### Magic Number Constants
+```kotlin
+// ❌ BAD: Hardcoded magic numbers scattered in code
+return FloatArray(128) // Feature vector size
+return List(32) { 0.0f } // EQ bands
+
+// ✅ GOOD: Named constants with clear purpose
+companion object {
+    private const val AUDIO_FEATURE_VECTOR_SIZE = 128
+    private const val EQ_BANDS_COUNT = 32
+}
+return FloatArray(AUDIO_FEATURE_VECTOR_SIZE)
+return List(EQ_BANDS_COUNT) { 0.0f }
+```
+
+### Input Validation Best Practices
+```kotlin
+// ❌ BAD: Missing parameter validation
+suspend fun processAudio(buffer: FloatArray, sampleRate: Int) {
+    // Direct processing without checks
+}
+
+// ✅ GOOD: Comprehensive parameter validation
+suspend fun processAudio(buffer: FloatArray, sampleRate: Int) {
+    require(buffer.isNotEmpty()) { "Audio buffer cannot be empty" }
+    require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
+    // Processing logic
+}
+```
+
+### Documentation Standards
+```kotlin
+// ❌ BAD: Minimal documentation
+suspend fun analyze(data: FloatArray): Result
+
+// ✅ GOOD: Comprehensive documentation with error cases
+/**
+ * Analyze audio content in real-time
+ * @param audioBuffer Audio samples for analysis
+ * @param sampleRate Sample rate of the audio  
+ * @return AudioIntelligence analysis results
+ * @throws IllegalArgumentException if parameters are invalid
+ * @throws IllegalStateException if processor not initialized
+ */
+suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelligence
+```
+
+### Key Principles
+1. **Fail Fast**: Use `require()` and `check()` for precondition validation
+2. **Explicit Errors**: Throw `NotImplementedError` instead of returning empty/null
+3. **Named Constants**: Replace all magic numbers with descriptive constants
+4. **Comprehensive Docs**: Document all parameters, return values, and exceptions
+5. **Graceful Degradation**: Handle initialization and resource loading failures
+
+These patterns ensure Copilot reviews pass and maintain professional code quality standards.
+
 ---
 
 *This document serves as the living guide for the FTL Hi-Res Audio Player project development. It should be updated regularly as the project evolves and new insights are gained through AI-assisted development.*
