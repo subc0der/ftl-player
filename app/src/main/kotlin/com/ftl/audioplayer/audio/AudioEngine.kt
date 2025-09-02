@@ -21,6 +21,7 @@ import android.content.Context
 import android.media.AudioFormat
 import android.media.AudioManager
 import android.media.AudioTrack
+import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -52,7 +53,13 @@ class AudioEngine @Inject constructor(
         
         // Load native library
         init {
-            System.loadLibrary("ftl_audio_engine")
+            try {
+                System.loadLibrary("ftl_audio_engine")
+                Log.i("AudioEngine", "Native audio library loaded successfully")
+            } catch (e: UnsatisfiedLinkError) {
+                Log.e("AudioEngine", "Failed to load native audio library: ${e.message}")
+                throw RuntimeException("Failed to load ftl_audio_engine native library", e)
+            }
         }
     }
     
@@ -201,6 +208,7 @@ class AudioEngine @Inject constructor(
      * Start audio playback
      */
     suspend fun start(): Boolean {
+        check(nativeEngineHandle != 0L) { "Audio engine not initialized" }
         if (_engineState.value != AudioEngineState.READY) return false
         
         val result = nativeStartPlayback(nativeEngineHandle)
@@ -214,6 +222,7 @@ class AudioEngine @Inject constructor(
      * Stop audio playback
      */
     suspend fun stop(): Boolean {
+        check(nativeEngineHandle != 0L) { "Audio engine not initialized" }
         if (_engineState.value != AudioEngineState.PLAYING) return false
         
         val result = nativeStopPlayback(nativeEngineHandle)
@@ -227,6 +236,7 @@ class AudioEngine @Inject constructor(
      * Pause audio playback
      */
     suspend fun pause(): Boolean {
+        check(nativeEngineHandle != 0L) { "Audio engine not initialized" }
         if (_engineState.value != AudioEngineState.PLAYING) return false
         
         val result = nativePausePlayback(nativeEngineHandle)
@@ -240,6 +250,7 @@ class AudioEngine @Inject constructor(
      * Resume audio playback
      */
     suspend fun resume(): Boolean {
+        check(nativeEngineHandle != 0L) { "Audio engine not initialized" }
         if (_engineState.value != AudioEngineState.PAUSED) return false
         
         val result = nativeResumePlayback(nativeEngineHandle)
@@ -266,6 +277,10 @@ class AudioEngine @Inject constructor(
         sampleRate: Int,
         channelCount: Int
     ): FloatArray? {
+        require(audioData.isNotEmpty()) { "Audio buffer cannot be empty" }
+        require(sampleRate > 0) { "Sample rate must be positive, got: $sampleRate" }
+        require(channelCount > 0) { "Channel count must be positive, got: $channelCount" }
+        
         if (_engineState.value != AudioEngineState.PLAYING && 
             _engineState.value != AudioEngineState.READY) {
             return null

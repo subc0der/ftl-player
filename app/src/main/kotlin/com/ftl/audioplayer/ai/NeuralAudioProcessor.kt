@@ -268,8 +268,8 @@ class NeuralAudioProcessor @Inject constructor(
         // 3. Harmonic enhancement
         // 4. Spatial audio processing
         
-        // TODO: Implement actual neural network audio enhancement
-        return audioBuffer // Will integrate with native processing once models are loaded
+        // Returns original buffer until neural network models are fully integrated
+        return audioBuffer
     }
     
     /**

@@ -36,6 +36,10 @@ class AudioEngineTestViewModel @Inject constructor(
     companion object {
         private const val TAG = "AudioEngineTest"
         private const val METRICS_UPDATE_INTERVAL_MS = 1000L // Update every second
+        private const val PERFORMANCE_LOG_INTERVAL = 48L // Log every ~1 second at 48kHz callbacks
+        private const val HIGH_PROCESSING_TIME_THRESHOLD_US = 2000.0 // 2ms processing time threshold
+        private const val STEREO_CHANNEL_DIVIDER = 2
+        private const val STRESS_TEST_LOG_INTERVAL = 20
     }
     
     // Expose audio engine state flows
@@ -157,7 +161,7 @@ class AudioEngineTestViewModel @Inject constructor(
                     val metrics = audioEngine.getPerformanceMetrics()
                     
                     // Log performance data periodically
-                    if (metrics.callbackCount % 48 == 0L) { // Every ~1 second at 48kHz
+                    if (metrics.callbackCount % PERFORMANCE_LOG_INTERVAL == 0L) {
                         Log.d(TAG, "📊 Performance Update:")
                         Log.d(TAG, "   Callbacks: ${metrics.callbackCount}")
                         Log.d(TAG, "   Avg Processing: %.2f μs".format(metrics.averageProcessingTimeUs))
@@ -167,7 +171,7 @@ class AudioEngineTestViewModel @Inject constructor(
                     }
                     
                     // Check for performance issues
-                    if (metrics.averageProcessingTimeUs > 2000.0) { // > 2ms average
+                    if (metrics.averageProcessingTimeUs > HIGH_PROCESSING_TIME_THRESHOLD_US) {
                         Log.w(TAG, "⚠️ High processing time detected: %.2f μs".format(metrics.averageProcessingTimeUs))
                     }
                     
@@ -233,7 +237,7 @@ class AudioEngineTestViewModel @Inject constructor(
             // Create test audio buffer (1000 samples, stereo, 48kHz)
             val testBuffer = FloatArray(2000) { index ->
                 // Generate a 440Hz sine wave
-                val sample = index / 2 // Sample index (stereo)
+                val sample = index / STEREO_CHANNEL_DIVIDER // Sample index (stereo)
                 (0.5 * kotlin.math.sin(2.0 * kotlin.math.PI * 440.0 * sample / 48000.0)).toFloat()
             }
             
@@ -265,7 +269,7 @@ class AudioEngineTestViewModel @Inject constructor(
             val testBuffer = FloatArray(1024) { 0.1f } // Small test buffer
             audioEngine.processAudioBuffer(testBuffer, 48000, 2)
             
-            if (iteration % 20 == 0) {
+            if (iteration % STRESS_TEST_LOG_INTERVAL == 0) {
                 val metrics = audioEngine.getPerformanceMetrics()
                 Log.d(TAG, "Stress test iteration $iteration: Avg processing ${metrics.averageProcessingTimeUs} μs")
             }
