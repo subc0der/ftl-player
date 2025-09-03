@@ -82,14 +82,72 @@ grep -n "pattern" file.kt  # Verify if issue still exists
 # If already fixed, document success of proactive approach
 ```
 
+### ❌ **Hardcoded Log Tags**
+**Issue:** Using hardcoded strings for log tags instead of constants creates inconsistency
+**Found in:** `AudioEngine.kt:58,60` (LOG_TAG hardcoded as "AudioEngine")
+**Solution:** Use consistent TAG constants across all classes:
+```kotlin
+// ❌ BAD - Hardcoded log tag
+Log.i("AudioEngine", "Native audio library loaded successfully")
+
+// ✅ GOOD - Named constant for consistency
+companion object {
+    private const val TAG = "AudioEngine"
+}
+Log.i(TAG, "Native audio library loaded successfully")
+```
+
+### ❌ **Magic Numbers in Configuration**
+**Issue:** Hardcoded numeric values make code unmaintainable and unclear
+**Found in:** `AudioEngine.kt:171,184,198,201` (256, 2, 0 hardcoded values)
+**Solution:** Extract to named constants with clear semantic meaning:
+```kotlin
+// ❌ BAD - Magic numbers scattered in code
+val framesPerBurst = audioManager.getProperty(...)?.toInt() ?: 256
+channelCount = 2 // Stereo
+deviceId = 0 // Default device
+
+// ✅ GOOD - Named constants with clear purpose
+companion object {
+    private const val DEFAULT_BUFFER_SIZE_FRAMES = 256
+    private const val STEREO_CHANNEL_COUNT = 2
+    private const val DEFAULT_DEVICE_ID = 0
+}
+val framesPerBurst = audioManager.getProperty(...)?.toInt() ?: DEFAULT_BUFFER_SIZE_FRAMES
+channelCount = STEREO_CHANNEL_COUNT
+deviceId = DEFAULT_DEVICE_ID
+```
+
+### ❌ **Missing Error Logging in Catch Blocks**
+**Issue:** Silent catch blocks without logging make debugging difficult
+**Found in:** `AudioEngine.kt:156` (initialization exception handling)
+**Solution:** Always log exceptions for debugging purposes:
+```kotlin
+// ❌ BAD - Silent exception handling
+} catch (e: Exception) {
+    _engineState.value = AudioEngineState.ERROR
+    continuation.resume(false)
+}
+
+// ✅ GOOD - Comprehensive error logging
+} catch (e: Exception) {
+    Log.e(TAG, "Exception during audio engine initialization", e)
+    _engineState.value = AudioEngineState.ERROR
+    continuation.resume(false)
+}
+```
+
 ### 📋 **Copilot Review Best Practices**
 1. **Proactively search for similar patterns** across entire codebase when fixing issues
 2. **Performance validation in audio paths** - avoid heavy exception handling
 3. **Extract JNI signatures** to maintainable named constants
 4. **Pre-calculate loop constants** for mathematical operations
-5. **Test build after each fix** to ensure no regressions
-6. **Version lag awareness** - verify current code before applying suggestions
-7. **Proactive fixing prevents review cycles** - systematic pattern fixing reduces iterations
+5. **Use consistent TAG constants** for all logging across classes
+6. **Extract magic numbers** to named constants with descriptive names
+7. **Always log exceptions** in catch blocks with context information
+8. **Test build after each fix** to ensure no regressions
+9. **Version lag awareness** - verify current code before applying suggestions
+10. **Proactive fixing prevents review cycles** - systematic pattern fixing reduces iterations
 
 ### 🎉 **Successful Proactive Approach Example**
 **Scenario:** PR #4 Copilot review cycle
