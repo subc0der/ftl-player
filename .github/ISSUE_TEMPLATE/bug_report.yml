@@ -1,0 +1,359 @@
+name: 🐛 Bug Report
+description: Report a bug or issue with the FTL Hi-Res Audio Player
+title: "[BUG] "
+<<<<<<< HEAD
+labels: ["bug", "triage"]
+=======
+labels: ["bug", "triage", "needs-investigation"]
+>>>>>>> feature/core-audio-engine
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🎵 FTL Hi-Res Audio Player Bug Report
+        
+        ```
+<<<<<<< HEAD
+        ╔═══════════════════════════════════════╗
+        ║           🐛 BUG REPORT 🐛            ║
+        ║     Neural Audio System Malfunction   ║
+        ╚═══════════════════════════════════════╝
+        ```
+        
+        Thank you for helping improve the FTL Hi-Res Audio Player! Please provide detailed information about the issue.
+=======
+        ╔═══════════════════════════════════════════════════════════════╗
+        ║                      🐛 SYSTEM MALFUNCTION 🐛                ║
+        ║                 Neural Audio Engine Bug Report               ║
+        ║                                                               ║
+        ║    ⚡ CYBER AQUA (#00FFFF) • NEURAL INDIGO (#4B0082) ⚡      ║
+        ╚═══════════════════════════════════════════════════════════════╝
+        ```
+        
+        **Help us fix the glitch in the matrix!** Your detailed bug report helps us maintain the highest quality audiophile experience.
+
+  - type: checkboxes
+    id: pre-check
+    attributes:
+      label: 🔍 Pre-Check
+      description: Please confirm you've done these steps before reporting
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I am using the latest version of FTL Audio Player
+          required: true
+        - label: I have tried restarting the app
+          required: true
+>>>>>>> feature/core-audio-engine
+
+  - type: textarea
+    id: bug-description
+    attributes:
+<<<<<<< HEAD
+      label: 🔍 Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe the bug in detail...
+=======
+      label: 🔥 Bug Description
+      description: A clear and concise description of the malfunction
+      placeholder: |
+        Describe what's wrong with the neural audio system...
+        
+        Example: "The 32-band parametric EQ crashes when adjusting Q-factor above 15.0 on the 8kHz band during DSD playback"
+>>>>>>> feature/core-audio-engine
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+<<<<<<< HEAD
+      label: 🔄 Steps to Reproduce
+      description: Tell us how to reproduce this behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+=======
+      label: ⚡ Reproduction Steps
+      description: Tell us how to trigger this system malfunction
+      placeholder: |
+        Step-by-step instructions to reproduce the bug:
+        
+        1. Navigate to Enhanced EQ section
+        2. Load DSD audio file (sample rate: 2.8MHz)
+        3. Adjust 8kHz band Q-factor to 20.0
+        4. Observe system crash with error code XYZ
+      value: |
+        1. 
+        2. 
+        3. 
+        4. 
+>>>>>>> feature/core-audio-engine
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+<<<<<<< HEAD
+      label: ✅ Expected Behavior
+      description: What should happen instead?
+      placeholder: Describe what you expected to happen...
+=======
+      label: ✨ Expected Behavior
+      description: What should the neural system do instead?
+      placeholder: "The Q-factor should adjust smoothly without system instability, maintaining real-time audio processing..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: 💥 Actual Behavior
+      description: What actually happened? Include any error messages
+      placeholder: |
+        What went wrong:
+        - App crashed with ANR (Application Not Responding)
+        - Audio stuttering for 2-3 seconds before crash
+        - Error message: "Neural processing thread terminated unexpectedly"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 🚨 Bug Severity
+      description: How critical is this issue?
+      options:
+        - 🔴 Critical - App crashes/unusable
+        - 🟠 High - Major feature broken
+        - 🟡 Medium - Minor feature issue
+        - 🟢 Low - Cosmetic/edge case
+        - 🔵 Enhancement - Improvement suggestion
+>>>>>>> feature/core-audio-engine
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+<<<<<<< HEAD
+      label: 🧩 Component
+      description: Which component is affected?
+      options:
+        - Audio Engine
+        - Equalizer (32-band)
+        - User Interface
+        - Playlist Management
+        - Settings System
+        - File Management
+        - Neural Network Features
+        - Performance/Battery
+        - Other
+=======
+      label: 🧩 Affected Component
+      description: Which neural system component is malfunctioning?
+      options:
+        - 🎵 Audio Engine (Core Processing)
+        - 🎛️ 32-Band Parametric EQ
+        - 🎨 Cyberpunk UI/UX
+        - 🤖 Neural AI Features
+        - 💪 Fitness & Biometric Integration
+        - ⚙️ Settings System (200+ options)
+        - 📱 Playlist Management
+        - 🔄 File Management/Import
+        - 🌐 Cloud Synchronization
+        - 🎧 Hardware Integration (DAC/Headphones)
+        - 📊 Performance/Battery
+        - 🔐 Security/Privacy
+        - 📝 Other (specify in description)
+>>>>>>> feature/core-audio-engine
+    validations:
+      required: true
+
+  - type: input
+    id: device-info
+    attributes:
+<<<<<<< HEAD
+      label: 📱 Device Information
+      description: Device model, Android version, RAM
+      placeholder: "e.g., Samsung Galaxy S23, Android 14, 8GB RAM"
+=======
+      label: 📱 Device Neural Profile
+      description: Your Android device specifications
+      placeholder: "Samsung Galaxy S24 Ultra, Android 14, Snapdragon 8 Gen 3, 12GB RAM, 256GB Storage"
+>>>>>>> feature/core-audio-engine
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+<<<<<<< HEAD
+      label: 📦 App Version
+      description: Which version of FTL Audio Player?
+      placeholder: "e.g., v1.2.3"
+=======
+      label: 🔢 FTL Audio Player Version
+      description: Which version are you running?
+      placeholder: "v2.1.0-beta (build 2024.03.15)"
+>>>>>>> feature/core-audio-engine
+    validations:
+      required: true
+
+  - type: dropdown
+    id: audio-format
+    attributes:
+      label: 🎵 Audio Format (if applicable)
+<<<<<<< HEAD
+      description: What audio format were you playing?
+      options:
+        - FLAC
+        - ALAC
+        - DSD
+        - MQA
+        - MP3
+        - AAC
+        - OGG
+        - WAV
+        - Other
+        - Not applicable
+=======
+      description: What format was playing when the bug occurred?
+      options:
+        - FLAC (16/44.1 - CD Quality)
+        - FLAC (24/96 - Hi-Res)
+        - FLAC (24/192 - Studio Master)
+        - FLAC (32/384+ - Ultra Hi-Res)
+        - DSD64 (2.8MHz)
+        - DSD128 (5.6MHz)
+        - DSD256 (11.2MHz)
+        - DSD512 (22.4MHz)
+        - MQA (Master Quality Authenticated)
+        - ALAC (Apple Lossless)
+        - AAC (256kbps+)
+        - MP3 (320kbps)
+        - OGG Vorbis
+        - WAV (Uncompressed)
+        - Not applicable/Not audio related
+    validations:
+      required: false
+
+  - type: textarea
+    id: audio-settings
+    attributes:
+      label: 🎛️ Audio Configuration
+      description: Current audio settings when bug occurred
+      placeholder: |
+        EQ Settings: Custom preset "Neural Workout"
+        Sample Rate: 96kHz/24-bit
+        Buffer Size: 256 samples
+        Audio Latency: Ultra-Low mode
+        Neural Processing: Enabled (Biometric-Responsive)
+        Hardware: USB DAC connected (Schiit Modi 3+)
+      render: yaml
+>>>>>>> feature/core-audio-engine
+
+  - type: textarea
+    id: crash-logs
+    attributes:
+<<<<<<< HEAD
+      label: 📊 Crash Logs / Error Messages
+      description: Any error messages, crash logs, or logcat output
+      placeholder: Paste crash logs or error messages here...
+=======
+      label: 📊 System Logs & Crash Data
+      description: Paste any error messages, logcat output, or crash reports
+      placeholder: |
+        Paste crash logs, error messages, or debug output here:
+        
+        E/AudioTrack: AudioFlinger could not create track, status: -12
+        E/MediaPlayer: Error (1, -19)
+        W/AudioManager: Use of stream types is deprecated for operations other than volume control
+>>>>>>> feature/core-audio-engine
+      render: shell
+
+  - type: textarea
+    id: additional-context
+    attributes:
+<<<<<<< HEAD
+      label: 📝 Additional Context
+      description: Any other context about the problem
+      placeholder: |
+        - Audio output device (headphones, speakers, DAC)
+        - EQ settings being used
+        - Playlist size
+        - Any recent changes made
+        
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      description: Please confirm you've completed these steps
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have provided all required information
+          required: true
+        - label: This issue is reproducible
+          required: true
+=======
+      label: 🌐 Additional Neural Context
+      description: Any other context that might help debug this issue
+      placeholder: |
+        Additional information:
+        - Connected hardware (DAC, headphones, speakers)
+        - Network conditions (if applicable)
+        - Recent app updates or system changes
+        - Specific tracks/files that trigger the issue
+        - Time of day (for biometric-related features)
+        - Workout state (if fitness features involved)
+        - Any workarounds you've discovered
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: 💥 Impact Assessment
+      description: How does this bug affect your audiophile experience?
+      placeholder: |
+        User impact:
+        - Frequency: How often does this occur?
+        - Workflow disruption: Does this break your listening session?
+        - Data loss: Any playlists, settings, or audio analysis lost?
+        - Workaround availability: Any temporary fixes?
+
+  - type: checkboxes
+    id: final-checklist
+    attributes:
+      label: ⚡ Final Neural Verification
+      description: Confirm your submission quality
+      options:
+        - label: I have provided detailed reproduction steps
+          required: true
+        - label: I have included relevant device and version information
+          required: true
+        - label: I have described the expected vs actual behavior clearly
+          required: true
+        - label: This issue is reproducible and affects the core audio experience
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        **🤖 Neural Processing Complete**
+        
+        Thank you for helping optimize the FTL Hi-Res Audio Player experience! Our neural debugging systems will analyze your report and prioritize fixes based on impact to the audiophile community.
+        
+        ```
+        ┌─────────────────────────────────────────────┐
+        │  ⚡ BUG REPORT TRANSMITTED TO NEURAL NET ⚡  │  
+        │     Your issue ID will be generated...      │
+        └─────────────────────────────────────────────┘
+        ```
+>>>>>>> feature/core-audio-engine

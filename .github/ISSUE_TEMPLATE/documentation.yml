@@ -1,0 +1,354 @@
+name: 📚 Documentation Update
+description: Request documentation improvements, corrections, or additions
+title: "[DOCS] "
+labels: ["documentation", "content", "user-experience"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📚 FTL Documentation Enhancement
+        
+        ```
+        ╔═══════════════════════════════════════════════════════════════╗
+        ║                📚 DOCUMENTATION ENHANCEMENT 📚               ║
+        ║             Neural Knowledge Base Evolution                   ║
+        ║                                                               ║
+        ║    ⚡ CYBER AQUA (#00FFFF) • NEURAL INDIGO (#4B0082) ⚡      ║
+        ╚═══════════════════════════════════════════════════════════════╝
+        ```
+        
+        **Help us build the ultimate audiophile knowledge base!** Your documentation feedback ensures every user can master the neural audio experience.
+
+  - type: checkboxes
+    id: doc-research
+    attributes:
+      label: 📖 Documentation Research
+      description: Please confirm you've explored existing documentation
+      options:
+        - label: I have searched existing documentation for this topic
+          required: true
+        - label: I have checked the main README.md and CLAUDE.md files
+          required: true
+        - label: I have reviewed relevant feature documentation in /docs/
+          required: false
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: 📋 Documentation Category
+      description: What type of documentation needs attention?
+      options:
+        - 📖 User Guide - How-to instructions for end users
+        - 🔧 Technical Guide - Developer/advanced user documentation
+        - 🎵 Audio Setup - Audiophile configuration guides
+        - 🎛️ EQ Configuration - Equalizer setup and optimization
+        - 🤖 AI Features - Neural network and ML feature guides
+        - 💪 Fitness Integration - Biometric and workout features
+        - ⚙️ Settings Reference - Comprehensive settings documentation
+        - 🎨 UI/UX Guide - Interface and customization help
+        - 🐛 Troubleshooting - Problem-solving documentation
+        - 🔌 Hardware Setup - DAC, headphone, and device integration
+        - 📱 Platform Guide - Android-specific instructions
+        - 🌐 API Documentation - Developer integration guides
+        - 🎓 Tutorial Series - Step-by-step learning content
+        - 📊 Performance Guide - Optimization and benchmarking
+        - ❓ FAQ Updates - Frequently asked questions
+    validations:
+      required: true
+
+  - type: dropdown
+    id: doc-priority
+    attributes:
+      label: ⚡ Documentation Priority
+      description: How important is this documentation update?
+      options:
+        - 🔥 Critical - Essential for basic app usage
+        - 🚀 High - Important for optimal user experience
+        - 📈 Medium - Helpful improvement for users
+        - 💡 Low - Nice-to-have enhancement
+        - 📚 Comprehensive - Part of larger documentation overhaul
+    validations:
+      required: true
+
+  - type: textarea
+    id: doc-issue
+    attributes:
+      label: 📋 Documentation Issue
+      description: What specific documentation problem needs to be addressed?
+      placeholder: |
+        Describe the documentation issue:
+        
+        **Missing Information:**
+        - What critical information is missing?
+        - Which user scenarios are not covered?
+        - What questions remain unanswered?
+        
+        **Incorrect Information:**
+        - What specific details are wrong or outdated?
+        - Which instructions don't work as described?
+        - What has changed since the documentation was written?
+        
+        **Unclear Information:**
+        - What sections are confusing or ambiguous?
+        - Which technical terms need better explanation?
+        - What steps need more detailed guidance?
+        
+        Example: "The 32-band EQ documentation doesn't explain Q-factor values clearly. Users don't understand the difference between Q=0.5 (wide) vs Q=10 (narrow) and how it affects audio quality."
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected-sections
+    attributes:
+      label: 📍 Affected Documentation Sections
+      description: Which specific files or sections need updates?
+      placeholder: |
+        Specific documentation locations:
+        
+        **Files:**
+        - README.md (section: XYZ)
+        - CLAUDE.md (section: ABC)  
+        - /docs/music_player_prd.md (section: DEF)
+        - /docs/ftl_custom_settings_spec.md (section: GHI)
+        
+        **Sections/Headings:**
+        - Installation Instructions
+        - EQ Configuration Guide
+        - Neural AI Setup
+        - Performance Optimization
+        
+        **Broken Links:**
+        - Links that return 404 errors
+        - References to moved content
+        - Outdated external links
+
+  - type: textarea
+    id: user-impact
+    attributes:
+      label: 👥 User Impact Analysis
+      description: How does this documentation issue affect users?
+      placeholder: |
+        Impact on user experience:
+        
+        **New Users:**
+        - How does this affect onboarding?
+        - What prevents successful setup?
+        - Which features become inaccessible?
+        
+        **Experienced Users:**
+        - What advanced features lack documentation?
+        - Which optimization guides are missing?
+        - What troubleshooting info is needed?
+        
+        **Audiophile Community:**
+        - What professional-grade documentation is missing?
+        - Which technical specifications need clarification?
+        - What comparison data would be helpful?
+        
+        **Specific User Stories:**
+        "As a new user, I couldn't figure out how to set up my USB DAC because the hardware integration guide doesn't cover USB-C to USB-A adapters..."
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: ✨ Proposed Documentation Solution
+      description: Your suggestions for improving the documentation
+      placeholder: |
+        Suggested documentation improvements:
+        
+        **Content Structure:**
+        - How should information be organized?
+        - What sections need to be added/removed/merged?
+        - How can navigation be improved?
+        
+        **Content Details:**
+        - What specific information should be included?
+        - Which examples or screenshots would help?
+        - What step-by-step procedures are needed?
+        
+        **Format Improvements:**
+        - Better formatting (tables, code blocks, etc.)
+        - Visual aids (diagrams, flowcharts)
+        - Interactive elements (checkboxes, expandable sections)
+        
+        **Accessibility:**
+        - Language simplification needs
+        - Translation considerations
+        - Technical level adjustments
+
+  - type: textarea
+    id: example-content
+    attributes:
+      label: 📝 Example Content Draft
+      description: Provide a draft or example of the improved documentation
+      placeholder: |
+        Draft content or outline:
+        
+        If you have specific text, examples, or outlines for the improved documentation, please include them here:
+        
+        ```markdown
+        # Example Documentation Section
+        
+        ## Overview
+        Brief description of the feature/concept
+        
+        ## Step-by-Step Guide
+        1. First step with clear instructions
+        2. Second step with expected results
+        3. Third step with troubleshooting notes
+        
+        ## Advanced Configuration
+        - Advanced option 1: Description and use cases
+        - Advanced option 2: Technical details and warnings
+        
+        ## Common Issues
+        **Problem:** Description of common issue
+        **Solution:** Step-by-step resolution
+        
+        ## See Also
+        - Related documentation links
+        - External resources
+        ```
+
+  - type: textarea
+    id: reference-materials
+    attributes:
+      label: 📚 Reference Materials
+      description: Sources or references for the documentation update
+      placeholder: |
+        Reference materials and sources:
+        
+        **Technical Sources:**
+        - Official Android documentation links
+        - Audio engineering standards/specifications
+        - Industry best practices documentation
+        - Academic papers or research
+        
+        **Community Resources:**
+        - User forum discussions
+        - Reddit/Discord conversations
+        - GitHub issues with solutions
+        - Community-generated guides
+        
+        **Competitive Analysis:**
+        - How other audio apps document similar features
+        - Industry standard documentation formats
+        - Best-practice examples from other projects
+        
+        **Internal Sources:**
+        - Existing code comments or documentation
+        - Feature specifications from development
+        - User support ticket patterns
+
+  - type: dropdown
+    id: documentation-format
+    attributes:
+      label: 📄 Preferred Documentation Format
+      description: What format would work best for this content?
+      options:
+        - 📖 Markdown Guide - Standard markdown documentation
+        - 🎥 Video Tutorial - Screen recording or animated guide
+        - 📊 Interactive Guide - Step-by-step interactive content
+        - 📋 Quick Reference - Cheat sheet or reference card
+        - 🔧 Code Examples - Technical implementation samples
+        - 📱 Screenshots/Mockups - Visual step-by-step guide
+        - 📚 Comprehensive Manual - Detailed reference documentation
+        - ❓ FAQ Entry - Question and answer format
+        - 🎯 User Story - Scenario-based walkthrough
+    validations:
+      required: false
+
+  - type: textarea
+    id: localization-needs
+    attributes:
+      label: 🌍 Localization Considerations
+      description: Should this documentation be available in multiple languages?
+      placeholder: |
+        Language and localization needs:
+        
+        **Target Languages:**
+        - Primary languages for audiophile community
+        - Technical term translations needed
+        - Cultural considerations for different markets
+        
+        **Technical Terminology:**
+        - Audio engineering terms that need careful translation
+        - Brand names and proper nouns to maintain
+        - Units of measurement (Hz, dB, etc.) standardization
+        
+        **Regional Considerations:**
+        - Different hardware availability by region
+        - Platform differences (Android versions, OEM customizations)
+        - Legal/regulatory differences for audio specifications
+
+  - type: checkboxes
+    id: contribution-offer
+    attributes:
+      label: 🤝 Documentation Contribution
+      description: How would you like to contribute to the solution?
+      options:
+        - label: I can help write the improved documentation
+          required: false
+        - label: I can provide technical review and feedback
+          required: false
+        - label: I can create screenshots or visual aids
+          required: false
+        - label: I can test the documentation with real users
+          required: false
+        - label: I can translate content to other languages
+          required: false
+
+  - type: checkboxes
+    id: final-doc-check
+    attributes:
+      label: 📚 Final Documentation Check
+      description: Verify your documentation request
+      options:
+        - label: I have clearly identified the documentation problem
+          required: true
+        - label: I have explained how this affects user experience
+          required: true
+        - label: I have provided constructive suggestions for improvement
+          required: true
+        - label: I understand this is about documentation, not feature requests
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        **🤖 Documentation Enhancement Queued**
+        
+        Your documentation improvement request has been added to our neural knowledge base enhancement queue! Our AI-assisted documentation system will process this using:
+        
+        ```
+        ┌─────────────────────────────────────────────┐
+        │  📚 DOCUMENTATION ANALYSIS PROTOCOL ACTIVE │
+        │                                             │
+        │  • Content Gap Analysis                     │
+        │  • User Journey Impact Assessment          │
+        │  • Technical Accuracy Verification         │
+        │  • Accessibility & Clarity Optimization    │
+        │  • Community Knowledge Integration         │
+        └─────────────────────────────────────────────┘
+        ```
+        
+        **Documentation Standards:**
+        - 📖 Clear, concise, and actionable content
+        - 🎵 Audiophile-focused technical accuracy
+        - 🎨 Cyberpunk aesthetic consistency
+        - ⚡ Performance-oriented guidance
+        - 🤖 Neural AI integration examples
+        - 💪 Biometric feature explanations
+        
+        **Next Steps:**
+        - Content review and prioritization
+        - Technical accuracy verification
+        - User experience impact assessment
+        - Documentation roadmap integration
+        - Community feedback incorporation
+        
+        Thank you for helping build the ultimate neural audio documentation experience! 📚⚡🎵

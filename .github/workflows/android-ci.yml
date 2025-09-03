@@ -1,0 +1,510 @@
+name: 🎵 FTL Neural Audio CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master, develop, 'feature/**' ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.gitignore'
+      - 'LICENSE'
+  pull_request:
+    branches: [ main, master, develop ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.gitignore'
+      - 'LICENSE'
+
+# Cancel previous runs if a new one is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Neural Audio Player build configuration
+  JAVA_VERSION: '17'
+  ANDROID_COMPILE_SDK: '34'
+  ANDROID_TARGET_SDK: '34'
+  ANDROID_MIN_SDK: '24'
+  # Cyberpunk build variant
+  BUILD_VARIANT: 'debug'
+  # Performance targets for validation
+  MAX_APK_SIZE: '50MB'
+  TARGET_AUDIO_LATENCY: '10ms'
+
+jobs:
+  # ═════════════════════════════════════════════════════════════════
+  # NEURAL AUDIO ENGINE VALIDATION
+  # ═════════════════════════════════════════════════════════════════
+  
+  code-quality:
+    name: 🧠 Neural Code Quality Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: ⚡ Checkout Neural Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better analysis
+
+      - name: 🔧 Setup JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+
+      - name: 📦 Cache Gradle Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.android/build-cache
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: 🎛️ Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v2
+
+      - name: 🧹 Kotlin Code Style Check (ktlint)
+        run: ./gradlew ktlintCheck --parallel --build-cache
+
+      - name: 🔍 Android Lint Analysis
+        run: ./gradlew lint --parallel --build-cache
+
+      - name: 📊 Detekt Static Analysis
+        run: ./gradlew detekt --parallel --build-cache
+
+      - name: 📋 Upload Lint Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 🎵-ftl-lint-reports
+          path: |
+            app/build/reports/lint-results-*.html
+            app/build/reports/lint-results-*.xml
+            build/reports/detekt/
+          retention-days: 7
+
+      - name: 💬 Comment Lint Results on PR
+        if: github.event_name == 'pull_request' && (success() || failure())
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Read lint results if they exist
+            const lintResultsPath = 'app/build/reports/lint-results-debug.xml';
+            if (fs.existsSync(lintResultsPath)) {
+              const lintResults = fs.readFileSync(lintResultsPath, 'utf8');
+              const issueCount = (lintResults.match(/<issue/g) || []).length;
+              
+              const comment = `
+              ## 🧠 Neural Code Quality Analysis Results
+              
+              \`\`\`
+              ╔════════════════════════════════════════════════════╗
+              ║            🎵 FTL AUDIO QUALITY REPORT 🎵          ║
+              ║     Neural Code Analysis • Cyberpunk Standards    ║
+              ╚════════════════════════════════════════════════════╝
+              \`\`\`
+              
+              **Lint Issues Found:** ${issueCount}
+              
+              ${issueCount === 0 ? 
+                '✅ **Neural perfection achieved!** All code quality checks passed.' : 
+                '⚠️ Code quality issues detected. Please review the uploaded reports.'
+              }
+              
+              🎛️ **Quality Gates:**
+              - Kotlin Code Style (ktlint): ${issueCount === 0 ? '✅' : '❌'}
+              - Android Lint Analysis: Check uploaded reports
+              - Detekt Static Analysis: Check uploaded reports
+              `;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
+
+  # ═════════════════════════════════════════════════════════════════
+  # AUDIOPHILE UNIT TESTING MATRIX
+  # ═════════════════════════════════════════════════════════════════
+  
+  unit-tests:
+    name: 🎵 Audiophile Unit Tests (API ${{ matrix.api-level }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: code-quality
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        api-level: [24, 28, 32, 34]  # Min, Popular, Recent, Latest
+    
+    steps:
+      - name: ⚡ Checkout Neural Codebase
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+
+      - name: 📦 Cache Gradle Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.android/build-cache
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: 🧪 Run Unit Tests
+        run: |
+          ./gradlew test --parallel --build-cache \
+            -Pandroid.testInstrumentationRunnerArguments.class=com.ftl.audioplayer.test.AudioEngineTests
+
+      - name: 🎛️ Generate Test Coverage Report
+        run: ./gradlew jacocoTestReport --parallel
+
+      - name: 📊 Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 🎵-test-results-api-${{ matrix.api-level }}
+          path: |
+            app/build/test-results/
+            app/build/reports/tests/
+            app/build/reports/jacoco/
+          retention-days: 7
+
+      - name: 📈 Upload Coverage to Codecov
+        if: matrix.api-level == 34  # Only upload from latest API level
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+          flags: unittests
+          name: ftl-audio-coverage
+          fail_ci_if_error: false
+
+  # ═════════════════════════════════════════════════════════════════
+  # NEURAL AUDIO ENGINE BUILD & APK GENERATION
+  # ═════════════════════════════════════════════════════════════════
+  
+  build-apk:
+    name: 🎵 Neural Audio APK Generation
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: [code-quality, unit-tests]
+    
+    outputs:
+      apk-path: ${{ steps.build-apk.outputs.apk-path }}
+      apk-size: ${{ steps.apk-info.outputs.size }}
+      version-name: ${{ steps.version-info.outputs.version-name }}
+      version-code: ${{ steps.version-info.outputs.version-code }}
+
+    steps:
+      - name: ⚡ Checkout Neural Codebase
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+
+      - name: 📦 Cache Gradle Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.android/build-cache
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: 🎵 Build Neural Audio APK
+        id: build-apk
+        run: |
+          echo "🎛️ Building FTL Hi-Res Audio Player..."
+          ./gradlew assembleDebug --parallel --build-cache
+          
+          # Find the generated APK
+          APK_PATH=$(find app/build/outputs/apk -name "*.apk" | head -1)
+          echo "apk-path=$APK_PATH" >> $GITHUB_OUTPUT
+          echo "✅ APK generated: $APK_PATH"
+
+      - name: 📏 Extract APK Information
+        id: apk-info
+        run: |
+          APK_PATH="${{ steps.build-apk.outputs.apk-path }}"
+          APK_SIZE=$(stat -f%z "$APK_PATH" 2>/dev/null || stat -c%s "$APK_PATH")
+          APK_SIZE_MB=$((APK_SIZE / 1024 / 1024))
+          
+          echo "size=${APK_SIZE_MB}MB" >> $GITHUB_OUTPUT
+          echo "🎵 APK Size: ${APK_SIZE_MB}MB"
+          
+          # Validate APK size doesn't exceed target
+          if [ $APK_SIZE_MB -gt 50 ]; then
+            echo "⚠️ APK size (${APK_SIZE_MB}MB) exceeds target (${MAX_APK_SIZE})"
+            echo "APK_SIZE_WARNING=true" >> $GITHUB_ENV
+          fi
+
+      - name: 📱 Extract Version Information
+        id: version-info
+        run: |
+          # Extract version from build.gradle or version file
+          VERSION_NAME=$(grep -o 'versionName "[^"]*"' app/build.gradle | sed 's/versionName "\(.*\)"/\1/' || echo "1.0.0")
+          VERSION_CODE=$(grep -o 'versionCode [0-9]*' app/build.gradle | sed 's/versionCode \([0-9]*\)/\1/' || echo "1")
+          
+          echo "version-name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version-code=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "🎵 Version: $VERSION_NAME ($VERSION_CODE)"
+
+      - name: 🏷️ Generate Neural APK Name
+        id: apk-name
+        run: |
+          BRANCH_NAME=$(echo ${{ github.ref_name }} | sed 's/[^a-zA-Z0-9.-]/-/g')
+          COMMIT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          VERSION_NAME="${{ steps.version-info.outputs.version-name }}"
+          TIMESTAMP=$(date +%Y%m%d-%H%M)
+          
+          APK_NAME="FTL-Audio-Player-v${VERSION_NAME}-${BRANCH_NAME}-${COMMIT_SHA}-${TIMESTAMP}.apk"
+          echo "apk-name=$APK_NAME" >> $GITHUB_OUTPUT
+          echo "🎵 Neural APK Name: $APK_NAME"
+
+      - name: 📦 Upload Neural Audio APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.apk-name.outputs.apk-name }}
+          path: ${{ steps.build-apk.outputs.apk-path }}
+          retention-days: 30
+          compression-level: 1  # APK is already compressed
+
+      - name: 🎛️ Generate Build Summary
+        run: |
+          echo "## 🎵 FTL Neural Audio Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "╔════════════════════════════════════════════════════╗" >> $GITHUB_STEP_SUMMARY
+          echo "║            🎵 FTL AUDIO PLAYER BUILD 🎵            ║" >> $GITHUB_STEP_SUMMARY
+          echo "║       Neural-Enhanced Audiophile Experience       ║" >> $GITHUB_STEP_SUMMARY
+          echo "╚════════════════════════════════════════════════════╝" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**🎛️ Build Information:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Version: ${{ steps.version-info.outputs.version-name }} (Build ${{ steps.version-info.outputs.version-code }})" >> $GITHUB_STEP_SUMMARY
+          echo "- APK Size: ${{ steps.apk-info.outputs.size }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**⚡ Quality Gates:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Code Quality: ✅ Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- Unit Tests: ✅ Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- APK Generation: ✅ Success" >> $GITHUB_STEP_SUMMARY
+          echo "- Size Target: $([ -z "$APK_SIZE_WARNING" ] && echo "✅ Met (${MAX_APK_SIZE})" || echo "⚠️ Exceeded (${MAX_APK_SIZE})")" >> $GITHUB_STEP_SUMMARY
+
+  # ═════════════════════════════════════════════════════════════════
+  # CYBERPUNK SECURITY SCANNING
+  # ═════════════════════════════════════════════════════════════════
+  
+  security-scan:
+    name: 🔐 Cyberpunk Security Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: code-quality
+    
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    steps:
+      - name: ⚡ Checkout Neural Codebase
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Setup JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+
+      - name: 📦 Cache Gradle Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: 🛡️ Run Dependency Check (OWASP)
+        run: ./gradlew dependencyCheckAnalyze --parallel
+
+      - name: 🔍 CodeQL Analysis
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        uses: github/codeql-action/analyze@v3
+        with:
+          languages: java
+
+      - name: 🔐 Upload Security Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 🔐-security-reports
+          path: |
+            build/reports/dependency-check-report.html
+            build/reports/dependency-check-report.xml
+          retention-days: 30
+
+  # ═════════════════════════════════════════════════════════════════
+  # NEURAL AUDIO DEPLOYMENT PREPARATION
+  # ═════════════════════════════════════════════════════════════════
+  
+  deployment-ready:
+    name: 🚀 Neural Deployment Readiness
+    runs-on: ubuntu-latest
+    needs: [build-apk, security-scan]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: 🎵 Download Neural APK
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "FTL-Audio-Player-*.apk"
+          merge-multiple: true
+
+      - name: 📱 Prepare Release Notes
+        run: |
+          echo "## 🎵 FTL Hi-Res Audio Player - Neural Build Ready" > RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          echo "### ⚡ Cyberpunk Audio Experience" >> RELEASE_NOTES.md
+          echo "- **Version:** ${{ needs.build-apk.outputs.version-name }}" >> RELEASE_NOTES.md
+          echo "- **Build:** ${{ needs.build-apk.outputs.version-code }}" >> RELEASE_NOTES.md
+          echo "- **Size:** ${{ needs.build-apk.outputs.apk-size }}" >> RELEASE_NOTES.md
+          echo "- **Branch:** ${{ github.ref_name }}" >> RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+          echo "### 🎛️ Neural Enhancements" >> RELEASE_NOTES.md
+          echo "- ✅ All quality gates passed" >> RELEASE_NOTES.md
+          echo "- ✅ Security scanning completed" >> RELEASE_NOTES.md
+          echo "- ✅ Unit tests verified" >> RELEASE_NOTES.md
+          echo "- ✅ APK ready for audiophile testing" >> RELEASE_NOTES.md
+
+      - name: 🏷️ Create Release Tag (if main/master)
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: |
+          git config user.name "Neural Audio CI"
+          git config user.email "ci@ftl-audio.dev"
+          
+          TAG_NAME="build-${{ needs.build-apk.outputs.version-name }}-${{ github.run_number }}"
+          git tag -a "$TAG_NAME" -m "🎵 Neural Audio Build ${{ needs.build-apk.outputs.version-name }} (${{ needs.build-apk.outputs.version-code }})"
+          
+          echo "🏷️ Created tag: $TAG_NAME"
+
+  # ═════════════════════════════════════════════════════════════════
+  # NEURAL NOTIFICATION SYSTEM
+  # ═════════════════════════════════════════════════════════════════
+  
+  notify-completion:
+    name: 🤖 Neural Build Notification
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [code-quality, unit-tests, build-apk, security-scan]
+    
+    steps:
+      - name: 📊 Generate Build Status
+        run: |
+          # Determine overall status
+          CODE_QUALITY="${{ needs.code-quality.result }}"
+          UNIT_TESTS="${{ needs.unit-tests.result }}"
+          BUILD_APK="${{ needs.build-apk.result }}"
+          SECURITY_SCAN="${{ needs.security-scan.result }}"
+          
+          echo "CODE_QUALITY=$CODE_QUALITY" >> $GITHUB_ENV
+          echo "UNIT_TESTS=$UNIT_TESTS" >> $GITHUB_ENV
+          echo "BUILD_APK=$BUILD_APK" >> $GITHUB_ENV
+          echo "SECURITY_SCAN=$SECURITY_SCAN" >> $GITHUB_ENV
+          
+          # Determine overall success
+          if [[ "$CODE_QUALITY" == "success" && "$UNIT_TESTS" == "success" && "$BUILD_APK" == "success" && "$SECURITY_SCAN" == "success" ]]; then
+            echo "OVERALL_STATUS=success" >> $GITHUB_ENV
+            echo "STATUS_EMOJI=✅" >> $GITHUB_ENV
+          else
+            echo "OVERALL_STATUS=failure" >> $GITHUB_ENV
+            echo "STATUS_EMOJI=❌" >> $GITHUB_ENV
+          fi
+
+      - name: 🎵 Post Neural Build Summary
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const statusEmoji = process.env.STATUS_EMOJI;
+            const overallStatus = process.env.OVERALL_STATUS;
+            
+            const comment = `
+            ## ${statusEmoji} FTL Neural Audio CI/CD Results
+            
+            \`\`\`
+            ╔════════════════════════════════════════════════════╗
+            ║            🎵 NEURAL BUILD STATUS 🎵                ║
+            ║        Cyberpunk Audio Quality Pipeline           ║
+            ╚════════════════════════════════════════════════════╝
+            \`\`\`
+            
+            ### 🎛️ Quality Gates Status
+            
+            | Component | Status | Result |
+            |-----------|--------|---------|
+            | 🧠 Code Quality | ${process.env.CODE_QUALITY === 'success' ? '✅' : '❌'} | ${process.env.CODE_QUALITY} |
+            | 🎵 Unit Tests | ${process.env.UNIT_TESTS === 'success' ? '✅' : '❌'} | ${process.env.UNIT_TESTS} |
+            | 📱 APK Build | ${process.env.BUILD_APK === 'success' ? '✅' : '❌'} | ${process.env.BUILD_APK} |
+            | 🔐 Security Scan | ${process.env.SECURITY_SCAN === 'success' ? '✅' : '❌'} | ${process.env.SECURITY_SCAN} |
+            
+            ### 🎵 Neural Audio Specifications
+            - **Target Latency:** <10ms audio pipeline
+            - **Cyberpunk Theme:** Aquamarine + Indigo palette
+            - **32-Band EQ:** Q-factor precision (0.1-30.0)  
+            - **Neural AI:** Biometric-responsive processing
+            - **Quality Grade:** Audiophile professional
+            
+            ${overallStatus === 'success' ? 
+              '🎵 **Neural perfection achieved!** All systems operational for audiophile deployment.' : 
+              '⚠️ **System malfunction detected.** Please review failed components before neural integration.'
+            }
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: 🎵 Final Neural Status
+        run: |
+          echo ""
+          echo "╔════════════════════════════════════════════════════╗"
+          echo "║            🎵 FTL NEURAL AUDIO CI/CD 🎵            ║"
+          echo "║              Build Pipeline Complete              ║"
+          echo "╚════════════════════════════════════════════════════╝"
+          echo ""
+          echo "🎛️ Status: ${{ env.OVERALL_STATUS == 'success' && 'Neural Audio Ready' || 'System Malfunction' }}"
+          echo "⚡ Quality: ${{ env.OVERALL_STATUS == 'success' && 'Audiophile Grade' || 'Needs Debugging' }}"
+          echo "🎵 Experience: ${{ env.OVERALL_STATUS == 'success' && 'Cyberpunk Perfect' || 'Enhancement Required' }}"
+          echo ""

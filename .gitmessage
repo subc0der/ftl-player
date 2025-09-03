@@ -1,0 +1,22 @@
+# <type>(<scope>): <short description>
+#
+# <body>
+#
+# <footer>
+#
+# Type: feat|fix|docs|style|refactor|perf|test|chore
+# Scope: ui|audio|ml|db|api|gradle|ci (optional)
+# Examples:
+#   feat(audio): add 32-band parametric EQ with Q-factor controls
+#   fix(ui): resolve crash when rotating device in Now Playing screen
+#   docs(api): update audio engine documentation with new DSP methods
+#   perf(audio): optimize FFT processing for real-time analysis
+#   test(ui): add unit tests for cyberpunk theme components
+#   chore(gradle): update Kotlin to 1.9.10 and Compose to latest
+#
+# Guidelines:
+# - Use present tense ("add" not "added")
+# - Keep first line under 72 characters
+# - Reference GitHub issues with "Fixes #123" or "Closes #456"
+# - For breaking changes, start body with "BREAKING CHANGE:"
+# - Include motivation and context in body for complex changes
