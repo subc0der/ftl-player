@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import com.ftl.audioplayer.audio.AudioEngine
 
 /**
  * Main activity showcasing the FTL Audio Engine

@@ -20,7 +20,6 @@ package com.ftl.audioplayer.audio
 import android.content.Context
 import android.media.AudioFormat
 import android.media.AudioManager
-import android.media.AudioTrack
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
