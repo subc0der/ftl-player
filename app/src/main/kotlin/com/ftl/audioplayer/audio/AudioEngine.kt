@@ -44,6 +44,8 @@ class AudioEngine @Inject constructor(
     private val context: Context
 ) {
     companion object {
+        private const val TAG = "AudioEngine"
+        
         // Performance constants
         const val TARGET_LATENCY_MS = 10
         const val MIN_BUFFER_SIZE_FRAMES = 64
@@ -55,9 +57,9 @@ class AudioEngine @Inject constructor(
         init {
             try {
                 System.loadLibrary("ftl_audio_engine")
-                Log.i("AudioEngine", "Native audio library loaded successfully")
+                Log.i(TAG, "Native audio library loaded successfully")
             } catch (e: UnsatisfiedLinkError) {
-                Log.e("AudioEngine", "Failed to load native audio library: ${e.message}")
+                Log.e(TAG, "Failed to load native audio library: ${e.message}")
                 throw RuntimeException("Failed to load ftl_audio_engine native library", e)
             }
         }
