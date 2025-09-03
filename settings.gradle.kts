@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "FTL Hi-Res Audio Player"
+rootProject.name = "FTL Audio Player"
 include(":app")

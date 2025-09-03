@@ -367,6 +367,7 @@ suspend fun processAudio(buffer: FloatArray, sampleRate: Int) {
 }
 ```
 
+<<<<<<< HEAD
 ### State vs Parameter Validation
 ```kotlin
 // ❌ BAD: Using require() for state validation
@@ -415,6 +416,8 @@ suspend fun generatePlaylist(): List<String> {
 }
 ```
 
+=======
+>>>>>>> feature/core-audio-engine
 ### Documentation Standards
 ```kotlin
 // ❌ BAD: Minimal documentation
@@ -433,6 +436,7 @@ suspend fun analyzeAudio(audioBuffer: FloatArray, sampleRate: Int): AudioIntelli
 ```
 
 ### Key Principles
+<<<<<<< HEAD
 1. **Proper Validation**: Use `require()` for parameters, `check()` for state
 2. **Explicit Behaviors**: Log warnings for fallback behaviors, use detailed `TODO()` for incomplete features  
 3. **Named Constants**: Replace all magic numbers with descriptive constants
@@ -716,6 +720,16 @@ build/
 - Keep repository focused on source code only
 - **See `/docs/APK_TESTING_GUIDE.md` for comprehensive APK management guidelines**
 
+=======
+1. **Fail Fast**: Use `require()` and `check()` for precondition validation
+2. **Explicit Errors**: Throw `NotImplementedError` instead of returning empty/null
+3. **Named Constants**: Replace all magic numbers with descriptive constants
+4. **Comprehensive Docs**: Document all parameters, return values, and exceptions
+5. **Graceful Degradation**: Handle initialization and resource loading failures
+
+These patterns ensure Copilot reviews pass and maintain professional code quality standards.
+
+>>>>>>> feature/core-audio-engine
 ---
 
 *This document serves as the living guide for the FTL Hi-Res Audio Player project development. It should be updated regularly as the project evolves and new insights are gained through AI-assisted development.*
