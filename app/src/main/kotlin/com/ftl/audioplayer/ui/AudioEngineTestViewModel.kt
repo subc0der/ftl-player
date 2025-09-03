@@ -40,6 +40,7 @@ class AudioEngineTestViewModel @Inject constructor(
         private const val HIGH_PROCESSING_TIME_THRESHOLD_US = 2000.0 // 2ms processing time threshold
         private const val STEREO_CHANNEL_DIVIDER = 2
         private const val STRESS_TEST_LOG_INTERVAL = 20
+        private const val UNDERRUN_LOG_INTERVAL = 10L // Log underruns every 10 occurrences
     }
     
     // Expose audio engine state flows
@@ -175,7 +176,7 @@ class AudioEngineTestViewModel @Inject constructor(
                         Log.w(TAG, "⚠️ High processing time detected: %.2f μs".format(metrics.averageProcessingTimeUs))
                     }
                     
-                    if (metrics.bufferUnderruns > 0 && metrics.bufferUnderruns % 10 == 0L) {
+                    if (metrics.bufferUnderruns > 0 && metrics.bufferUnderruns % UNDERRUN_LOG_INTERVAL == 0L) {
                         Log.w(TAG, "⚠️ Buffer underruns detected: ${metrics.bufferUnderruns}")
                     }
                     

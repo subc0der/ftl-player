@@ -53,6 +53,11 @@ class AudioEngine @Inject constructor(
         const val DEFAULT_SAMPLE_RATE = 48000
         const val DEFAULT_BIT_DEPTH = 24
         
+        // Audio configuration constants
+        private const val DEFAULT_BUFFER_SIZE_FRAMES = 256
+        private const val STEREO_CHANNEL_COUNT = 2
+        private const val DEFAULT_DEVICE_ID = 0
+        
         // Load native library
         init {
             try {
@@ -149,6 +154,7 @@ class AudioEngine @Inject constructor(
             }
             
         } catch (e: Exception) {
+            Log.e(TAG, "Exception during audio engine initialization", e)
             _engineState.value = AudioEngineState.ERROR
             continuation.resume(false)
         }
@@ -168,7 +174,7 @@ class AudioEngine @Inject constructor(
             ?: DEFAULT_SAMPLE_RATE
             
         val framesPerBurst = audioManager.getProperty(AudioManager.PROPERTY_OUTPUT_FRAMES_PER_BUFFER)?.toInt()
-            ?: 256
+            ?: DEFAULT_BUFFER_SIZE_FRAMES
         
         // Choose optimal sample rate
         val optimalSampleRate = when {
@@ -181,7 +187,7 @@ class AudioEngine @Inject constructor(
         val optimalBufferSize = when {
             preferredBufferSize > 0 -> preferredBufferSize
             framesPerBurst > 0 -> framesPerBurst
-            else -> 256
+            else -> DEFAULT_BUFFER_SIZE_FRAMES
         }.coerceIn(MIN_BUFFER_SIZE_FRAMES, MAX_BUFFER_SIZE_FRAMES)
         
         // Determine audio format
@@ -195,10 +201,10 @@ class AudioEngine @Inject constructor(
         return OptimalAudioConfig(
             sampleRate = optimalSampleRate,
             framesPerBurst = optimalBufferSize,
-            channelCount = 2, // Stereo
+            channelCount = STEREO_CHANNEL_COUNT,
             format = format,
             bitDepth = bitDepth,
-            deviceId = 0 // Default device
+            deviceId = DEFAULT_DEVICE_ID
         )
     }
     
