@@ -376,13 +376,11 @@ class AudioEngine @Inject constructor(
     // UTILITY FUNCTIONS
     // ═══════════════════════════════════════════════════════════════════════════════════
     
-    private fun mapNativeFormat(format: Int): String {
-        return when (format) {
-            AudioFormat.ENCODING_PCM_16BIT -> "PCM_16"
-            AudioFormat.ENCODING_PCM_24BIT_PACKED -> "PCM_24"
-            AudioFormat.ENCODING_PCM_FLOAT -> "PCM_FLOAT32"
-            else -> "UNKNOWN"
-        }
+    private fun mapNativeFormat(format: Int): String = when (format) {
+        AudioFormat.ENCODING_PCM_16BIT -> "PCM_16"
+        AudioFormat.ENCODING_PCM_24BIT_PACKED -> "PCM_24"
+        AudioFormat.ENCODING_PCM_FLOAT -> "PCM_FLOAT32"
+        else -> "UNKNOWN"
     }
     
     // ═══════════════════════════════════════════════════════════════════════════════════
