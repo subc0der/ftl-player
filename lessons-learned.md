@@ -150,6 +150,26 @@ import com.ftl.audioplayer.audio.AudioEngine  // Not directly used in MainActivi
 // Remove unused imports, keep only what's actually used
 ```
 
+### ❌ **Single Expression Functions with Block Body**
+**Issue:** Functions with single return statements can be simplified using expression body syntax
+**Found in:** `AudioEngine.kt:379` (mapNativeFormat function)
+**Solution:** Convert block body to expression body for single expressions:
+```kotlin
+// ❌ BAD - Verbose block body for single expression
+private fun mapNativeFormat(format: Int): String {
+    return when (format) {
+        AudioFormat.ENCODING_PCM_16BIT -> "PCM_16"
+        else -> "UNKNOWN"
+    }
+}
+
+// ✅ GOOD - Concise expression body syntax
+private fun mapNativeFormat(format: Int): String = when (format) {
+    AudioFormat.ENCODING_PCM_16BIT -> "PCM_16"
+    else -> "UNKNOWN"
+}
+```
+
 ### 📋 **Copilot Review Best Practices**
 1. **Proactively search for similar patterns** across entire codebase when fixing issues
 2. **Performance validation in audio paths** - avoid heavy exception handling
@@ -159,9 +179,10 @@ import com.ftl.audioplayer.audio.AudioEngine  // Not directly used in MainActivi
 6. **Extract magic numbers** to named constants with descriptive names
 7. **Always log exceptions** in catch blocks with context information
 8. **Remove unused imports** to maintain clean dependency hygiene
-9. **Test build after each fix** to ensure no regressions
-10. **Version lag awareness** - verify current code before applying suggestions
-11. **Proactive fixing prevents review cycles** - systematic pattern fixing reduces iterations
+9. **Convert single expression functions** to expression body syntax for conciseness
+10. **Test build after each fix** to ensure no regressions
+11. **Version lag awareness** - verify current code before applying suggestions
+12. **Proactive fixing prevents review cycles** - systematic pattern fixing reduces iterations
 
 ### 🎉 **Successful Proactive Approach Example**
 **Scenario:** PR #4 Copilot review cycle
