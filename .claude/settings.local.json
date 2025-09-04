@@ -24,7 +24,9 @@
       "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main/**)",
       "Read(C:\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main/**)",
       "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\cpp/**)",
-      "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)"
+      "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
+      "Bash(cp:*)",
+      "Bash(.gradlew assembleDebug)"
     ],
     "deny": [],
     "ask": []

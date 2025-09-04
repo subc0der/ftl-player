@@ -30,6 +30,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ftl.audioplayer.ui.navigation.FTLNavigation
+import com.ftl.audioplayer.ui.theme.FTLAudioTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -53,7 +55,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = Color.Black // Cyberpunk background
                 ) {
-                    AudioEngineTestScreen()
+                    FTLNavigation()
                 }
             }
         }

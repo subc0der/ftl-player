@@ -138,7 +138,7 @@ Always provide Claude with:
 #### User Interface
 - **Jetpack Compose** for modern, reactive UI
 - **Custom animations** with 120fps target
-- **Cyberpunk aesthetic** matching project theme
+- **Deep Purple & Green Cyan aesthetic** - sophisticated audiophile design
 - **Responsive design** for all screen sizes
 - **Accessibility support** for all users
 
@@ -256,7 +256,7 @@ Room Database:
 
 ### Phase 1: Foundation (Weeks 1-2)
 - Basic audio playback engine
-- Cyberpunk UI foundation
+- Deep Purple & Green Cyan UI foundation
 - Development environment setup
 - Initial testing framework
 
