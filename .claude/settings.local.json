@@ -35,7 +35,12 @@
       "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\ui\\viewmodels/**)",
       "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\playback/**)",
       "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
-      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\ui\\navigation/**)"
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\ui\\navigation/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\ui/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\playback/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\.claude\\context/**)"
     ],
     "deny": [],
     "ask": []
