@@ -53,17 +53,24 @@ Background: Black (#000000)                /* Dark-first design foundation */
 
 ## 📋 Development Status
 
-### Current Phase: Fresh Architecture Setup
-- ✅ **Documentation Complete** - Comprehensive specs and requirements
-- ✅ **Color Scheme Finalized** - Indigo and fluorescent aquamarine accents
-- ✅ **Code Style Guidelines** - Modern Kotlin, Clean Architecture standards
-- 🚧 **Clean Architecture Implementation** - Starting fresh with MVVM + Clean Architecture
+### ✅ Phase 3 Complete: Enhanced Now Playing Screen (v1.0.1-008)
+- ✅ **Interactive Now Playing Screen** - Seek bar, skip controls, album artwork
+- ✅ **Background Playback Service** - MediaSessionCompat with notification controls
+- ✅ **Lock Screen Integration** - Media controls with proper lifecycle management
+- ✅ **Splash Screen** - Custom branding with mercsev.png logo
+- ✅ **Music Library** - Scanning, display, and track selection
+- ✅ **Stable Playback** - Crash-free skip navigation with debounce protection
 
-### Completed Research & Planning
-- ✅ **Technical Requirements** - 200+ customizable settings, audiophile-grade specs
-- ✅ **UI/UX Specifications** - Complete cyberpunk design system
-- ✅ **Feature Roadmap** - Detailed milestone planning
-- ✅ **Architecture Planning** - Clean separation, dependency injection, testing
+### 🚀 Ready for Phase 4: Queue & Playlist Management
+- 🎯 **Next Features:** Queue visualization, drag-to-reorder, playlist CRUD, shuffle/repeat modes
+- 🔧 **Current Build:** v1.0.1-008 - All critical bugs resolved
+- 🏗️ **Foundation:** Clean Architecture + MVVM + Hilt DI established
+
+### Development Progress
+- ✅ **Phases 1-3 Complete** - Core music playback fully functional
+- ✅ **Architecture Established** - Clean separation, dependency injection, testing
+- ✅ **UI Foundation** - Jetpack Compose with indigo/cyan cyberpunk theme
+- ✅ **Technical Foundation** - Room database, MediaPlayer integration, background services
 
 ---
 
@@ -168,9 +175,21 @@ ftl-player/
 git clone https://github.com/subc0der/ftl-player.git
 cd ftl-player
 
-# Set up development environment (coming soon)
-# ./gradlew build
+# Build the project
+./gradlew assembleDebug
+
+# Install on device/emulator
+adb install app/build/outputs/apk/debug/app-debug.apk
 ```
+
+### **Current Features**
+- 🎵 **Music Library Scanning** - Automatic detection of MP3/FLAC files
+- 🎛️ **Now Playing Screen** - Full playback controls with real-time position
+- 🔄 **Skip Navigation** - Previous/Next track with crash protection
+- 📱 **Background Playback** - Continues playing when app is minimized
+- 🔒 **Lock Screen Controls** - Media controls on lock screen and notification
+- 🎨 **Cyberpunk UI** - Dark theme with indigo/cyan accents
+- ⚡ **Performance** - Smooth 60fps UI with optimized audio processing
 
 ---
 
