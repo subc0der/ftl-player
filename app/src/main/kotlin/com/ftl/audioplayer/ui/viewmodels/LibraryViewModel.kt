@@ -102,6 +102,10 @@ class LibraryViewModel @Inject constructor(
                 } else {
                     _errorMessage.value = "Scan complete! Found $scannedCount music files."
                     android.util.Log.d(TAG, "🎉 Scan successful - found $scannedCount tracks")
+                    
+                    // Clear the message after 3 seconds
+                    kotlinx.coroutines.delay(3000)
+                    _errorMessage.value = null
                 }
             } catch (e: SecurityException) {
                 android.util.Log.e(TAG, "🚫 Security exception during scan", e)
@@ -126,20 +130,36 @@ class LibraryViewModel @Inject constructor(
     
     fun playTrack(track: Track) {
         viewModelScope.launch {
-            android.util.Log.d(TAG, "🎵 User tapped track: ${track.title} by ${track.artist}")
-            
-            // Increment play count in database
-            musicRepository.incrementPlayCount(track.id)
-            
-            // Set the current playlist (all tracks) and find the index
-            val allTracks = tracks.value
-            val trackIndex = allTracks.indexOf(track)
-            if (trackIndex >= 0) {
-                musicPlayer.setPlaylist(allTracks, trackIndex)
+            try {
+                android.util.Log.d(TAG, "🎵 User tapped track: ${track.title} by ${track.artist}")
+                
+                // Stop any current playback first
+                android.util.Log.d(TAG, "🛑 Stopping current playback before switching tracks")
+                musicPlayer.stop()
+                
+                // Increment play count in database
+                android.util.Log.d(TAG, "📊 Incrementing play count for track ID: ${track.id}")
+                musicRepository.incrementPlayCount(track.id)
+                
+                // Set the current playlist (all tracks) and find the index
+                val allTracks = tracks.value
+                val trackIndex = allTracks.indexOf(track)
+                android.util.Log.d(TAG, "📋 Track found at index $trackIndex in playlist of ${allTracks.size} tracks")
+                
+                if (trackIndex >= 0) {
+                    android.util.Log.d(TAG, "📋 Setting playlist with ${allTracks.size} tracks, starting at index $trackIndex")
+                    musicPlayer.setPlaylist(allTracks, trackIndex)
+                    
+                    // Play the track
+                    android.util.Log.d(TAG, "▶️ Starting playback of track: ${track.title}")
+                    musicPlayer.playTrack(track)
+                } else {
+                    android.util.Log.e(TAG, "❌ Track not found in current playlist!")
+                }
+                
+            } catch (e: Exception) {
+                android.util.Log.e(TAG, "💥 Error in playTrack for ${track.title}", e)
             }
-            
-            // Play the track
-            musicPlayer.playTrack(track)
         }
     }
     

@@ -1,10 +1,12 @@
 package com.ftl.audioplayer.playback
 
 import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.util.Log
 import com.ftl.audioplayer.data.entities.Track
+import com.ftl.audioplayer.service.FTLAudioService
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,10 +42,15 @@ class MusicPlayer @Inject constructor(
     
     private var playlist: List<Track> = emptyList()
     private var currentIndex: Int = -1
+    private var isTransitioning: Boolean = false
     
     fun setPlaylist(tracks: List<Track>, startIndex: Int = 0) {
         playlist = tracks
         currentIndex = startIndex
+        Log.d(TAG, "📋 Playlist set: ${tracks.size} tracks, starting at index $startIndex")
+        if (tracks.isNotEmpty() && startIndex < tracks.size) {
+            Log.d(TAG, "🎯 Current track will be: ${tracks[startIndex].title}")
+        }
     }
     
     suspend fun playTrack(track: Track) {
@@ -51,12 +58,20 @@ class MusicPlayer @Inject constructor(
         
         try {
             // Stop current playback and position updates
+            Log.d(TAG, "🛑 Stopping any existing MediaPlayer...")
             stop()
+            
+            // Add small delay to ensure MediaPlayer is fully released
+            kotlinx.coroutines.delay(200)
             
             _isBuffering.value = true
             _currentTrack.value = track
             
+            Log.d(TAG, "🎵 Starting audio service...")
+            startAudioService()
+            
             // Create new MediaPlayer
+            Log.d(TAG, "📱 Creating new MediaPlayer instance...")
             mediaPlayer = MediaPlayer().apply {
                 setDataSource(context, Uri.parse(track.filePath))
                 setOnPreparedListener {
@@ -96,16 +111,54 @@ class MusicPlayer @Inject constructor(
     }
     
     suspend fun playNext() {
-        if (playlist.isNotEmpty() && currentIndex < playlist.size - 1) {
-            currentIndex++
-            playTrack(playlist[currentIndex])
+        try {
+            // Prevent rapid-fire track changes
+            if (isTransitioning) {
+                Log.w(TAG, "⚠️ Already transitioning to another track, ignoring playNext()")
+                return
+            }
+            
+            Log.d(TAG, "⏭️ Attempting to play next track. Current index: $currentIndex, Playlist size: ${playlist.size}")
+            if (playlist.isNotEmpty() && currentIndex < playlist.size - 1) {
+                isTransitioning = true
+                currentIndex++
+                Log.d(TAG, "✅ Playing next track at index $currentIndex: ${playlist[currentIndex].title}")
+                playTrack(playlist[currentIndex])
+                // Reset transition flag after a delay
+                kotlinx.coroutines.delay(500)
+                isTransitioning = false
+            } else {
+                Log.w(TAG, "⚠️ Cannot play next: at end of playlist or playlist empty")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Error in playNext()", e)
+            isTransitioning = false
         }
     }
     
     suspend fun playPrevious() {
-        if (playlist.isNotEmpty() && currentIndex > 0) {
-            currentIndex--
-            playTrack(playlist[currentIndex])
+        try {
+            // Prevent rapid-fire track changes
+            if (isTransitioning) {
+                Log.w(TAG, "⚠️ Already transitioning to another track, ignoring playPrevious()")
+                return
+            }
+            
+            Log.d(TAG, "⏮️ Attempting to play previous track. Current index: $currentIndex, Playlist size: ${playlist.size}")
+            if (playlist.isNotEmpty() && currentIndex > 0) {
+                isTransitioning = true
+                currentIndex--
+                Log.d(TAG, "✅ Playing previous track at index $currentIndex: ${playlist[currentIndex].title}")
+                playTrack(playlist[currentIndex])
+                // Reset transition flag after a delay
+                kotlinx.coroutines.delay(500)
+                isTransitioning = false
+            } else {
+                Log.w(TAG, "⚠️ Cannot play previous: at beginning of playlist or playlist empty")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Error in playPrevious()", e)
+            isTransitioning = false
         }
     }
     
@@ -160,11 +213,15 @@ class MusicPlayer @Inject constructor(
     fun stop() {
         stopPositionUpdates()
         mediaPlayer?.let { player ->
-            if (player.isPlaying) {
-                player.stop()
+            try {
+                if (player.isPlaying) {
+                    player.stop()
+                }
+                player.release()
+                Log.d(TAG, "⏹️ Playback stopped and MediaPlayer released")
+            } catch (e: Exception) {
+                Log.w(TAG, "⚠️ Error stopping MediaPlayer (ignoring): ${e.message}")
             }
-            player.release()
-            Log.d(TAG, "⏹️ Playback stopped")
         }
         mediaPlayer = null
         _isPlaying.value = false
@@ -172,6 +229,7 @@ class MusicPlayer @Inject constructor(
         _playbackPosition.value = 0L
         _duration.value = 0L
         _isBuffering.value = false
+        stopAudioService()
     }
     
     fun togglePlayPause() {
@@ -180,5 +238,17 @@ class MusicPlayer @Inject constructor(
         } else {
             resume()
         }
+    }
+    
+    private fun startAudioService() {
+        val serviceIntent = Intent(context, FTLAudioService::class.java)
+        context.startForegroundService(serviceIntent)
+        Log.d(TAG, "🎵 Started FTL Audio Service")
+    }
+    
+    private fun stopAudioService() {
+        val serviceIntent = Intent(context, FTLAudioService::class.java)
+        context.stopService(serviceIntent)
+        Log.d(TAG, "🛑 Stopped FTL Audio Service")
     }
 }

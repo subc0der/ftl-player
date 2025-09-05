@@ -28,8 +28,7 @@ fun TrackItem(
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .clickable { onTrackClick() },
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = Color.Black.copy(alpha = 0.4f)
         ),
@@ -42,18 +41,18 @@ fun TrackItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Album art placeholder - optimized for Pixel 9 Pro
-            Box(
+            // Play button - functional play button for each track
+            IconButton(
+                onClick = onTrackClick,
                 modifier = Modifier
                     .size(56.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(CyberAqua.copy(alpha = 0.1f)),
-                contentAlignment = Alignment.Center
+                    .background(CyberAqua.copy(alpha = 0.1f))
             ) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
-                    contentDescription = null,
-                    tint = CyberAqua.copy(alpha = 0.7f),
+                    contentDescription = "Play ${track.title}",
+                    tint = CyberAqua,
                     modifier = Modifier.size(28.dp)
                 )
             }

@@ -9,6 +9,7 @@ package com.ftl.audioplayer.ui
  * 🎵 CYBER AQUA (#00FFFF) • NEURAL INDIGO (#4B0082) • AUDIOPHILE GRADE 🎵
  */
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ftl.audioplayer.ui.navigation.FTLNavigation
 import com.ftl.audioplayer.ui.theme.FTLAudioTheme
+import com.ftl.audioplayer.service.FTLAudioService
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -59,6 +61,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "🛑 MainActivity destroyed - stopping audio service")
+        // Stop the audio service when the app is closed to clear lock screen controls
+        stopService(Intent(this, FTLAudioService::class.java))
     }
 }
 

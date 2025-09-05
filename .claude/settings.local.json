@@ -26,7 +26,16 @@
       "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\cpp/**)",
       "Read(\\c\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
       "Bash(cp:*)",
-      "Bash(.gradlew assembleDebug)"
+      "Bash(.gradlew assembleDebug)",
+      "Read(C:\\Users\\mkhal\\.claude/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\service/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\ui/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\ui/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\ui\\viewmodels/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\ui\\viewmodels/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\playback/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\ui\\navigation/**)"
     ],
     "deny": [],
     "ask": []

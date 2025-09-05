@@ -27,7 +27,7 @@ import com.ftl.audioplayer.ui.screens.LibraryScreen
 import com.ftl.audioplayer.ui.screens.NowPlayingScreen
 import com.ftl.audioplayer.ui.screens.PlaylistsScreen
 import com.ftl.audioplayer.ui.screens.SettingsScreen
-import com.ftl.audioplayer.ui.screens.TestEngineScreen
+import com.ftl.audioplayer.ui.screens.EqualizerScreen
 import com.ftl.audioplayer.ui.theme.GreenCyan
 import com.ftl.audioplayer.ui.theme.DarkIndigoPurple
 import com.ftl.audioplayer.ui.theme.MediumIndigoPurple
@@ -40,8 +40,8 @@ sealed class Screen(
 ) {
     object Library : Screen("library", "Library", Icons.Default.Home, Icons.Filled.Home)
     object Playlists : Screen("playlists", "Playlists", Icons.Default.List, Icons.Filled.List)
+    object Equalizer : Screen("equalizer", "EQ", Icons.Default.Star, Icons.Filled.Star)
     object Settings : Screen("settings", "Settings", Icons.Default.Settings, Icons.Filled.Settings)
-    object TestEngine : Screen("test_engine", "Test", Icons.Default.Build, Icons.Filled.Build)
     object NowPlaying : Screen("now_playing", "Now Playing", Icons.Default.PlayArrow, Icons.Filled.PlayArrow)
 }
 
@@ -56,7 +56,7 @@ fun FTLNavigation(
     val bottomNavItems = listOf(
         Screen.Library,
         Screen.Playlists,
-        Screen.TestEngine,
+        Screen.Equalizer,
         Screen.Settings
     )
     
@@ -143,8 +143,8 @@ fun FTLNavigation(
             composable(Screen.Settings.route) {
                 SettingsScreen()
             }
-            composable(Screen.TestEngine.route) {
-                TestEngineScreen()
+            composable(Screen.Equalizer.route) {
+                EqualizerScreen()
             }
             composable(Screen.NowPlaying.route) {
                 NowPlayingScreen(

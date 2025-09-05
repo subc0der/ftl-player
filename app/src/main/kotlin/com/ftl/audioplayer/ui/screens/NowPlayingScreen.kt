@@ -4,6 +4,8 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.BorderStroke
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -29,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.ftl.audioplayer.ui.theme.DeepPurple
 import com.ftl.audioplayer.ui.theme.GreenCyan
+import com.ftl.audioplayer.ui.theme.Cyan
 import com.ftl.audioplayer.ui.theme.CyberPink
 import com.ftl.audioplayer.ui.theme.DarkIndigoPurple
 import com.ftl.audioplayer.ui.theme.MediumIndigoPurple
@@ -57,28 +61,37 @@ fun NowPlayingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp)
                 .systemBarsPadding()
         ) {
             // Top Bar
-            TopBar(onBackClick = onBackClick)
+            TopBar(
+                onBackClick = onBackClick,
+                modifier = Modifier.padding(horizontal = 24.dp)
+            )
             
-            Spacer(modifier = Modifier.height(32.dp))
-            
-            // Album Art with Visualization
-            Box(
+            // Scrollable content
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .padding(horizontal = 32.dp),
-                contentAlignment = Alignment.Center
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 24.dp)
             ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Album Art with Visualization
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .padding(horizontal = 32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
                 // Animated ring visualizer
                 if (isPlaying) {
                     AudioVisualizer()
                 }
                 
-                // Album art placeholder
+                // Album art with AsyncImage
                 Card(
                     modifier = Modifier
                         .fillMaxSize(0.75f)
@@ -88,30 +101,33 @@ fun NowPlayingScreen(
                     ),
                     border = BorderStroke(
                         width = 2.dp,
-                        color = if (isPlaying) GreenCyan else Color.Gray
+                        color = if (isPlaying) Cyan else Color.Gray
                     )
                 ) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = null,
-                            modifier = Modifier.size(120.dp),
-                            tint = Color.Gray.copy(alpha = 0.3f)
-                        )
+                    currentTrack?.let { track ->
+                        if (track.albumArt != null) {
+                            AsyncImage(
+                                model = track.albumArt,
+                                contentDescription = "Album art for ${track.title}",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            AlbumArtPlaceholder()
+                        }
+                    } ?: run {
+                        AlbumArtPlaceholder()
                     }
                 }
             }
             
-            Spacer(modifier = Modifier.height(48.dp))
-            
-            // Track Info
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                // Track Info
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                 currentTrack?.let { track ->
                     Text(
                         text = track.title,
@@ -119,7 +135,7 @@ fun NowPlayingScreen(
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
-                        maxLines = 1,
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
                     
@@ -128,7 +144,7 @@ fun NowPlayingScreen(
                     Text(
                         text = track.artist,
                         style = MaterialTheme.typography.bodyLarge,
-                        color = GreenCyan,
+                        color = Cyan,
                         textAlign = TextAlign.Center,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -165,46 +181,53 @@ fun NowPlayingScreen(
                         color = Color.Gray
                     )
                 }
+                }
+            }  // End of scrollable column
+            
+            // Fixed bottom controls (outside scroll area)
+            Column(
+                modifier = Modifier.padding(horizontal = 24.dp)
+            ) {
+                // Seek Bar
+                SeekBar(
+                    position = playbackPosition,
+                    duration = duration,
+                    onSeek = { viewModel.seekTo(it) },
+                    formatTime = { viewModel.formatTime(it) }
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Playback Controls
+                PlaybackControls(
+                    isPlaying = isPlaying,
+                    isBuffering = isBuffering,
+                    onPlayPause = { viewModel.togglePlayPause() },
+                    onNext = { viewModel.playNext() },
+                    onPrevious = { viewModel.playPrevious() }
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Bottom Actions
+                BottomActions(
+                    isFavorite = currentTrack?.isFavorite ?: false,
+                    onFavoriteClick = { viewModel.setFavorite(!it) }
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
             }
-            
-            Spacer(modifier = Modifier.height(32.dp))
-            
-            // Seek Bar
-            SeekBar(
-                position = playbackPosition,
-                duration = duration,
-                onSeek = { viewModel.seekTo(it) },
-                formatTime = { viewModel.formatTime(it) }
-            )
-            
-            Spacer(modifier = Modifier.height(32.dp))
-            
-            // Playback Controls
-            PlaybackControls(
-                isPlaying = isPlaying,
-                isBuffering = isBuffering,
-                onPlayPause = { viewModel.togglePlayPause() },
-                onNext = { viewModel.playNext() },
-                onPrevious = { viewModel.playPrevious() }
-            )
-            
-            Spacer(modifier = Modifier.weight(1f))
-            
-            // Bottom Actions
-            BottomActions(
-                isFavorite = currentTrack?.isFavorite ?: false,
-                onFavoriteClick = { viewModel.setFavorite(!it) }
-            )
-            
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
 @Composable
-private fun TopBar(onBackClick: () -> Unit) {
+private fun TopBar(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -372,7 +395,7 @@ private fun PlaybackControls(
             modifier = Modifier.size(56.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.ArrowBack,
+                imageVector = Icons.Default.KeyboardArrowLeft,
                 contentDescription = "Previous",
                 tint = Color.White,
                 modifier = Modifier.size(32.dp)
@@ -396,7 +419,7 @@ private fun PlaybackControls(
                 )
             } else {
                 Icon(
-                    imageVector = if (isPlaying) Icons.Default.Close else Icons.Default.PlayArrow,
+                    imageVector = Icons.Default.PlayArrow,
                     contentDescription = if (isPlaying) "Pause" else "Play",
                     tint = Color.White,
                     modifier = Modifier.size(36.dp)
@@ -410,7 +433,7 @@ private fun PlaybackControls(
             modifier = Modifier.size(56.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.ArrowForward,
+                imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = "Next",
                 tint = Color.White,
                 modifier = Modifier.size(32.dp)
@@ -459,5 +482,77 @@ private fun BottomActions(
                 tint = Color.White
             )
         }
+    }
+}
+
+@Composable
+private fun AlbumArtPlaceholder() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.PlayArrow,
+                contentDescription = null,
+                modifier = Modifier.size(120.dp),
+                tint = Cyan.copy(alpha = 0.4f)
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Text(
+                text = "♪ ♫ ♪",
+                fontSize = 24.sp,
+                color = Cyan.copy(alpha = 0.3f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun ScrollingText(
+    text: String,
+    modifier: Modifier = Modifier,
+    style: androidx.compose.ui.text.TextStyle = MaterialTheme.typography.bodyMedium,
+    color: Color = Color.White,
+    fontWeight: FontWeight? = null
+) {
+    var shouldScroll by remember { mutableStateOf(false) }
+    val maxWidth = 280.dp
+    
+    val infiniteTransition = rememberInfiniteTransition()
+    val animatedOffset by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = if (shouldScroll) -300f else 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = if (shouldScroll) 8000 else 0,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Restart
+        )
+    )
+    
+    Box(
+        modifier = modifier
+            .width(maxWidth)
+            .height(style.fontSize.value.dp * 1.5f),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = if (shouldScroll) "$text     $text" else text,
+            style = style,
+            color = color,
+            fontWeight = fontWeight,
+            maxLines = 1,
+            overflow = TextOverflow.Visible,
+            textAlign = if (shouldScroll) TextAlign.Start else TextAlign.Center,
+            modifier = Modifier
+                .offset(x = if (shouldScroll) animatedOffset.dp else 0.dp)
+        )
     }
 }

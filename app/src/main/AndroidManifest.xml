@@ -98,6 +98,21 @@ Performance & Feature Requirements:
         tools:targetApi="31">
         
         <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- SPLASH ACTIVITY -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        
+        <activity
+            android:name=".ui.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.FTLAudio.NoActionBar"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
         <!-- MAIN ACTIVITY -->
         <!-- ═══════════════════════════════════════════════════════════════ -->
         
@@ -107,11 +122,6 @@ Performance & Feature Requirements:
             android:theme="@style/Theme.FTLAudio"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            
             <!-- Media intent filters -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -125,12 +135,12 @@ Performance & Feature Requirements:
         <!-- ═══════════════════════════════════════════════════════════════ -->
         
         <service
-            android:name=".audio.FTLAudioService"
+            android:name=".service.FTLAudioService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>
-                <action android:name="androidx.media3.session.MediaSessionService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
         

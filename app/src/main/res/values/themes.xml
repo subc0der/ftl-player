@@ -25,4 +25,11 @@
         <!-- Custom Attributes -->
         <item name="android:fontFamily">monospace</item>
     </style>
+    
+    <!-- Splash Screen Theme - Full Screen with No Action Bar -->
+    <style name="Theme.FTLAudio.NoActionBar" parent="Theme.FTLAudio">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>
