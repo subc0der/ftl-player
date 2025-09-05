@@ -40,7 +40,20 @@
       "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\playback/**)",
       "Read(/C:\\Users\\mkhal\\dev\\ftl-player/**)",
       "Read(/C:\\Users\\mkhal\\dev\\ftl-player/**)",
-      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\.claude\\context/**)"
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\.claude\\context/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\apk-test-packages/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\.claude\\context/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\playback/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\playback/**)",
+      "Read(/C:\\Users\\mkhal\\dev\\ftl-player\\app\\src\\main\\kotlin\\com\\ftl\\audioplayer\\playback/**)"
     ],
     "deny": [],
     "ask": []

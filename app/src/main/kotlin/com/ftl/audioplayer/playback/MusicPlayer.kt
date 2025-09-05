@@ -20,6 +20,8 @@ class MusicPlayer @Inject constructor(
 ) {
     companion object {
         private const val TAG = "MusicPlayer"
+        private const val MEDIA_PLAYER_RELEASE_DELAY_MS = 200L
+        private const val TRACK_TRANSITION_DEBOUNCE_MS = 500L
     }
     
     private var mediaPlayer: MediaPlayer? = null
@@ -44,6 +46,11 @@ class MusicPlayer @Inject constructor(
     private var currentIndex: Int = -1
     private var isTransitioning: Boolean = false
     
+    /**
+     * Set the current playlist and starting position
+     * @param tracks List of tracks to play
+     * @param startIndex Index to start playback from (default: 0)
+     */
     fun setPlaylist(tracks: List<Track>, startIndex: Int = 0) {
         playlist = tracks
         currentIndex = startIndex
@@ -53,6 +60,11 @@ class MusicPlayer @Inject constructor(
         }
     }
     
+    /**
+     * Play a specific track with proper MediaPlayer lifecycle management
+     * @param track Track to play
+     * @throws Exception if track fails to load or play
+     */
     suspend fun playTrack(track: Track) {
         Log.d(TAG, "🎵 Playing track: ${track.title} by ${track.artist}")
         
@@ -62,7 +74,7 @@ class MusicPlayer @Inject constructor(
             stop()
             
             // Add small delay to ensure MediaPlayer is fully released
-            kotlinx.coroutines.delay(200)
+            kotlinx.coroutines.delay(MEDIA_PLAYER_RELEASE_DELAY_MS)
             
             _isBuffering.value = true
             _currentTrack.value = track
@@ -110,6 +122,10 @@ class MusicPlayer @Inject constructor(
         }
     }
     
+    /**
+     * Skip to next track in playlist with crash protection
+     * Implements debounce logic to prevent rapid-fire crashes
+     */
     suspend fun playNext() {
         try {
             // Prevent rapid-fire track changes
@@ -124,8 +140,8 @@ class MusicPlayer @Inject constructor(
                 currentIndex++
                 Log.d(TAG, "✅ Playing next track at index $currentIndex: ${playlist[currentIndex].title}")
                 playTrack(playlist[currentIndex])
-                // Reset transition flag after a delay
-                kotlinx.coroutines.delay(500)
+                // Reset transition flag after debounce period
+                kotlinx.coroutines.delay(TRACK_TRANSITION_DEBOUNCE_MS)
                 isTransitioning = false
             } else {
                 Log.w(TAG, "⚠️ Cannot play next: at end of playlist or playlist empty")
@@ -136,6 +152,10 @@ class MusicPlayer @Inject constructor(
         }
     }
     
+    /**
+     * Skip to previous track in playlist with crash protection
+     * Implements debounce logic to prevent rapid-fire crashes
+     */
     suspend fun playPrevious() {
         try {
             // Prevent rapid-fire track changes
@@ -150,8 +170,8 @@ class MusicPlayer @Inject constructor(
                 currentIndex--
                 Log.d(TAG, "✅ Playing previous track at index $currentIndex: ${playlist[currentIndex].title}")
                 playTrack(playlist[currentIndex])
-                // Reset transition flag after a delay
-                kotlinx.coroutines.delay(500)
+                // Reset transition flag after debounce period
+                kotlinx.coroutines.delay(TRACK_TRANSITION_DEBOUNCE_MS)
                 isTransitioning = false
             } else {
                 Log.w(TAG, "⚠️ Cannot play previous: at beginning of playlist or playlist empty")
@@ -162,6 +182,10 @@ class MusicPlayer @Inject constructor(
         }
     }
     
+    /**
+     * Seek to specific position in current track
+     * @param position Position in milliseconds to seek to
+     */
     fun seekTo(position: Long) {
         mediaPlayer?.let { player ->
             val safePosition = position.coerceIn(0, _duration.value)
