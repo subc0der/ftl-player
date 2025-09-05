@@ -73,6 +73,12 @@ Always provide Claude with:
 - Document complex algorithms inline
 - Keep configuration in easily accessible files
 
+#### Context File Management
+- **File Size Limit**: When .md files for Claude inside `.claude/context/` reach approximately 10KB in size, create a new file and give it a descriptive name
+- **Purpose**: Keep context files small so the project stays on track without impacting context window usage
+- **Naming Convention**: Use descriptive names that indicate the content scope (e.g., `phase3-playback-features.md`, `database-schema-changes.md`)
+- **Continuity**: Reference previous context files when creating new ones to maintain development continuity
+
 ## Development Workflow
 
 ### Feature Development Cycle
@@ -138,7 +144,7 @@ Always provide Claude with:
 #### User Interface
 - **Jetpack Compose** for modern, reactive UI
 - **Custom animations** with 120fps target
-- **Cyberpunk aesthetic** matching project theme
+- **Deep Purple & Green Cyan aesthetic** - sophisticated audiophile design
 - **Responsive design** for all screen sizes
 - **Accessibility support** for all users
 
@@ -203,10 +209,45 @@ Room Database:
 - **User feedback collection** and analysis
 
 ### Version Management
-- **Semantic versioning** (MAJOR.MINOR.PATCH)
+
+#### Semantic Versioning Strategy
+Based on standard semantic versioning (MAJOR.MINOR.PATCH-BUILD):
+
+**Current Pattern:** v1.0.0-XXX
+
+- **MAJOR (1)**: Core architecture changes, complete rewrites
+- **MINOR (0)**: New features, significant functionality additions  
+- **PATCH (0)**: Bug fixes, small improvements
+- **BUILD (XXX)**: Sequential build number for testing
+
+#### When to Increment:
+
+**MAJOR (1 → 2):**
+- Complete audio engine replacement (MediaPlayer → Native C++)
+- Major UI overhaul
+- Breaking database schema changes
+- Architecture redesign
+
+**MINOR (0 → 1):**
+- Phase completions (Enhanced Playback → Queue Management)
+- New major features (Playlists, EQ, Cloud Sync)
+- Significant user-facing additions
+
+**PATCH (0 → 1):**
+- Bug fixes within current phase
+- Small UI tweaks
+- Performance optimizations
+- Security patches
+
+**BUILD (015 → 016):**
+- Every APK build for testing
+- Feature iterations within same phase
+
+#### Version Control Process
 - **Feature flags** for gradual feature rollout
 - **Backward compatibility** maintenance
 - **Database migration** strategies
+- **APK naming**: `ftl-player-v{MAJOR.MINOR.PATCH}-{BUILD}-{DESCRIPTION}.apk`
 
 ## Success Metrics
 
@@ -256,7 +297,7 @@ Room Database:
 
 ### Phase 1: Foundation (Weeks 1-2)
 - Basic audio playback engine
-- Cyberpunk UI foundation
+- Deep Purple & Green Cyan UI foundation
 - Development environment setup
 - Initial testing framework
 

@@ -27,8 +27,8 @@ android {
         applicationId = "com.ftl.audioplayer"
         minSdk = 26  // Android 8.0 - AAudio support required
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0.0-alpha"
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         
@@ -135,6 +135,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     
     // Jetpack Compose
     implementation(platform("androidx.compose:compose-bom:2023.10.01"))
@@ -150,6 +151,10 @@ dependencies {
     implementation("androidx.media3:media3-ui:1.2.0")
     implementation("androidx.media3:media3-common:1.2.0")
     implementation("androidx.media3:media3-session:1.2.0")
+    
+    // Legacy Media Support (for MediaSessionCompat)
+    implementation("androidx.media:media:1.7.0")
+    implementation("androidx.lifecycle:lifecycle-service:2.7.0")
     
     // Room Database
     implementation("androidx.room:room-runtime:2.6.1")
