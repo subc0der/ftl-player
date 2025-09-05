@@ -270,9 +270,8 @@ class MusicRepository @Inject constructor(
                 bitRate = it.toIntOrNull() ?: bitRate
             }
             
-            retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_NUM_TRACKS)?.let {
-                channels = it.toIntOrNull() ?: channels
-            }
+            // MediaMetadataRetriever does not provide a reliable way to get the number of audio channels.
+            // We'll use the default value (2 for stereo), or set based on codec if needed.
             
             // Codec information
             retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE)?.let { mimeType ->

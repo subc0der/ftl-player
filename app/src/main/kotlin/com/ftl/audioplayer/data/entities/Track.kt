@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "tracks",
-    indices = [Index(value = ["filePath"], unique = true)]
+    indices = [Index(value = ["filePath", "fileSize"], unique = true)]
 )
 data class Track(
     @PrimaryKey(autoGenerate = true)

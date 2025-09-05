@@ -248,11 +248,14 @@ private fun TopBar(
             letterSpacing = 2.sp
         )
         
-        IconButton(onClick = { /* TODO: Show queue */ }) {
+        IconButton(
+            onClick = { /* TODO: Show queue */ },
+            enabled = false
+        ) {
             Icon(
                 imageVector = Icons.Default.List,
                 contentDescription = "Queue",
-                tint = Color.White
+                tint = Color.Gray.copy(alpha = 0.5f)
             )
         }
     }
@@ -419,7 +422,7 @@ private fun PlaybackControls(
                 )
             } else {
                 Icon(
-                    imageVector = Icons.Default.PlayArrow,
+                    imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                     contentDescription = if (isPlaying) "Pause" else "Play",
                     tint = Color.White,
                     modifier = Modifier.size(36.dp)
@@ -451,11 +454,14 @@ private fun BottomActions(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        IconButton(onClick = { /* TODO: Add to playlist */ }) {
+        IconButton(
+            onClick = { /* TODO: Add to playlist */ },
+            enabled = false
+        ) {
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "Add to Playlist",
-                tint = Color.White
+                tint = Color.Gray.copy(alpha = 0.5f)
             )
         }
         
@@ -467,19 +473,25 @@ private fun BottomActions(
             )
         }
         
-        IconButton(onClick = { /* TODO: Share */ }) {
+        IconButton(
+            onClick = { /* TODO: Share */ },
+            enabled = false
+        ) {
             Icon(
                 imageVector = Icons.Default.Share,
                 contentDescription = "Share",
-                tint = Color.White
+                tint = Color.Gray.copy(alpha = 0.5f)
             )
         }
         
-        IconButton(onClick = { /* TODO: Show more options */ }) {
+        IconButton(
+            onClick = { /* TODO: Show more options */ },
+            enabled = false
+        ) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = "More Options",
-                tint = Color.White
+                tint = Color.Gray.copy(alpha = 0.5f)
             )
         }
     }
