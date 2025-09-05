@@ -79,7 +79,7 @@ fun SplashScreen() {
             
             // Version info at bottom
             Text(
-                text = "v1.0.1-006",
+                text = "v1.0.1-007",
                 fontSize = 16.sp,
                 color = Color.Green.copy(alpha = 0.7f),
                 modifier = Modifier.padding(bottom = 32.dp)
