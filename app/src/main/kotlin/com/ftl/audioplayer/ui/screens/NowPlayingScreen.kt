@@ -405,7 +405,7 @@ private fun PlaybackControls(
             )
         }
         
-        // Play/Pause
+        // Play/Stop (using Close icon temporarily for Stop until pause is implemented)
         FilledIconButton(
             onClick = onPlayPause,
             modifier = Modifier.size(72.dp),
@@ -423,7 +423,7 @@ private fun PlaybackControls(
             } else {
                 Icon(
                     imageVector = if (isPlaying) Icons.Default.Close else Icons.Default.PlayArrow,
-                    contentDescription = if (isPlaying) "Pause" else "Play",
+                    contentDescription = if (isPlaying) "Stop" else "Play",
                     tint = Color.White,
                     modifier = Modifier.size(36.dp)
                 )

@@ -130,14 +130,14 @@ fun MiniPlayer(
                             }
                         }
                         
-                        // Play/Pause button
+                        // Play/Stop button (using Close icon temporarily for Stop until pause is implemented)
                         IconButton(
                             onClick = { viewModel.togglePlayPause() },
                             modifier = Modifier.size(40.dp)
                         ) {
                             Icon(
                                 imageVector = if (isPlaying) Icons.Default.Close else Icons.Default.PlayArrow,
-                                contentDescription = if (isPlaying) "Pause" else "Play",
+                                contentDescription = if (isPlaying) "Stop" else "Play",
                                 tint = GreenCyan,
                                 modifier = Modifier.size(24.dp)
                             )

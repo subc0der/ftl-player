@@ -761,7 +761,14 @@ build/
 - Keep repository focused on source code only
 - **See `/docs/APK_TESTING_GUIDE.md` for comprehensive APK management guidelines**
 
-=======
+### Known Issues & Solutions
+
+#### App Crashes After Updates
+**Issue**: App may crash when transitioning from splash screen to library after updating to a new version.
+**Solution**: Uninstall the app completely and reinstall the new APK. This typically occurs due to database schema changes or cached state conflicts.
+**Prevention**: For future updates, consider implementing proper database migration strategies and clearing app data on major version changes.
+
+### Key Principles
 1. **Fail Fast**: Use `require()` and `check()` for precondition validation
 2. **Explicit Errors**: Throw `NotImplementedError` instead of returning empty/null
 3. **Named Constants**: Replace all magic numbers with descriptive constants
@@ -769,8 +776,6 @@ build/
 5. **Graceful Degradation**: Handle initialization and resource loading failures
 
 These patterns ensure Copilot reviews pass and maintain professional code quality standards.
-
->>>>>>> feature/core-audio-engine
 ---
 
 *This document serves as the living guide for the FTL Hi-Res Audio Player project development. It should be updated regularly as the project evolves and new insights are gained through AI-assisted development.*
