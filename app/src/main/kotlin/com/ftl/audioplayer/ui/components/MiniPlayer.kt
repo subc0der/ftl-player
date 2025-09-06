@@ -136,7 +136,7 @@ fun MiniPlayer(
                             modifier = Modifier.size(40.dp)
                         ) {
                             Icon(
-                                imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
+                                imageVector = if (isPlaying) Icons.Default.Close else Icons.Default.PlayArrow,
                                 contentDescription = if (isPlaying) "Pause" else "Play",
                                 tint = GreenCyan,
                                 modifier = Modifier.size(24.dp)
